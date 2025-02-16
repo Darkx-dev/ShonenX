@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nekoflow/data/boxes/user_box.dart';
-import 'package:nekoflow/routes/app_router.dart';
 import 'package:nekoflow/screens/onboarding/loading_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -22,7 +23,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     {
       "title": "Welcome to ShonenX",
       "description": "Your gateway to endless anime adventures",
-      "image": "lib/assets/images/onboarding/logo.png",
+      "image": "lib/assets/images/onboarding/logo.svg",
     },
     {
       "title": "Discover New Worlds",
@@ -40,7 +41,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeBoxAndCheckStatus();
+    Future.delayed(const Duration(milliseconds: 5000), () => _initializeBoxAndCheckStatus());
   }
 
   Future<void> _initializeBoxAndCheckStatus() async {
@@ -53,11 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
       if (user.name != 'Guest' && user.name != '' && mounted) {
         // If onboarding is completed, navigate to AppRouter
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => AppRouter(name: user.name),
-          ),
-        );
+        context.go('/home');
       } else {
         // If onboarding is not completed, show onboarding screens
         setState(() {
@@ -83,12 +80,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     try {
       await _userBox.updateUser(name: name.trim());
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AppRouter(name: name.trim()),
-          ),
-        );
+        context.go('/home');
       }
     } catch (e) {
       if (mounted) {
@@ -145,11 +137,39 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            flex: 3,
-            child: Image.asset(
-              onboardingData[index]['image']!,
-              fit: BoxFit.contain,
-            ),
+            child: onboardingData[index]['image']!.endsWith('.svg')
+                ? SvgPicture.asset(
+                    onboardingData[index]['image']!,
+                    allowDrawingOutsideViewBox: true,
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context)
+                          .colorScheme
+                          .primary, // The desired color
+                      BlendMode.srcIn,
+                    ),
+                    fit: BoxFit.contain,
+                  )
+                : Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.63,
+                        width: MediaQuery.of(context).size.width * 0.65, 
+                        // constraints: BoxConstraints(
+                        //   maxWidth: MediaQuery.of(context).size.width * 0.7,
+                        //   maxHeight: MediaQuery.of(context).size.height * 0.6,
+                        // ),
+                        child: Image.asset(
+                          onboardingData[index]['image']!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Image.asset(
+                        'lib/assets/images/onboarding/mocup.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ],
+                  ),
           ),
           const SizedBox(height: 32),
           Text(
@@ -157,7 +177,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
               letterSpacing: 0.5,
             ),
             textAlign: TextAlign.center,
@@ -167,7 +186,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             onboardingData[index]['description']!,
             style: const TextStyle(
               fontSize: 18,
-              color: Colors.white70,
               height: 1.4,
             ),
             textAlign: TextAlign.center,
@@ -189,7 +207,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
               letterSpacing: 0.5,
             ),
           ),
@@ -198,7 +215,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             "Enter your name to personalize your experience",
             style: TextStyle(
               fontSize: 18,
-              color: Colors.white70,
               height: 1.4,
             ),
           ),
@@ -206,12 +222,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           TextField(
             controller: _nameController,
             onChanged: (value) => setState(() => name = value),
-            style: const TextStyle(color: Colors.white, fontSize: 18),
+            style: const TextStyle(fontSize: 18),
             decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.white.withValues(alpha: 0.1),
               hintText: 'Name',
-              hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none,
@@ -240,8 +254,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 height: 8,
                 decoration: BoxDecoration(
                   color: _currentPage == index
-                      ? Colors.white
-                      : Colors.white.withValues(alpha: 0.3),
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).primaryColor.withValues(alpha: 0.3),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -256,10 +270,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               _currentPage < onboardingData.length ? 'Next' : 'Get Started',
               style: TextStyle(
                 fontSize: 18,
-                color: (name.trim().isNotEmpty ||
-                        _currentPage < onboardingData.length)
-                    ? Colors.white
-                    : Colors.white.withValues(alpha: 0.5),
                 fontWeight: FontWeight.bold,
               ),
             ),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nekoflow/data/models/anime_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:nekoflow/screens/main/details/details_screen.dart';
-import 'package:dismissible_page/dismissible_page.dart';
 
 class SpotlightCard extends StatelessWidget {
   final SpotlightAnime anime;
@@ -20,14 +19,8 @@ class SpotlightCard extends StatelessWidget {
 
     return Card(
       child: GestureDetector(
-        onTap: () => context.pushTransparentRoute(
-          DetailsScreen(
-            name: anime.name,
-            id: anime.id,
-            image: anime.poster,
-            tag: tag,
-          ),
-        ),
+        onTap: () => context.push(
+            '/details?id=${anime.id}&tag=$tag&image=${anime.poster}&name=${anime.name}&type=${anime.type}'),
         child: SizedBox(
           width: double.infinity,
           height: 240, // Adjusted height for better layout

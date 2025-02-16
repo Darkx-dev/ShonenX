@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nekoflow/data/models/watchlist/watchlist_model.dart';
-import 'package:nekoflow/screens/main/details/details_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:nekoflow/utils/converter.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AnimeCard extends StatelessWidget {
   final BaseAnimeCard anime;
@@ -21,18 +21,8 @@ class AnimeCard extends StatelessWidget {
 
   void _navigateToDetails(BuildContext context) {
     if (!disableInteraction) {
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => DetailsScreen(
-            id: anime.id,
-            image: getHighResImage(anime.poster),
-            name: anime.name,
-            tag: tag,
-            type: anime.type,
-          ),
-        ),
-      );
+      context.push(
+          '/details?id=${anime.id}&type=${anime.type}&name=${anime.name}&image=${getHighResImage(anime.poster)}&tag=$tag');
     }
   }
 
@@ -44,19 +34,12 @@ class AnimeCard extends StatelessWidget {
   Widget _buildGridLayout(BuildContext context) {
     return AspectRatio(
       aspectRatio: 2 / 3,
-      child: Card(
-        elevation: 8,
-        child: _buildCardContent(context, isGrid: true),
-      ),
+      child: Card(child: _buildCardContent(context, isGrid: true)),
     );
   }
 
   Widget _buildListLayout(BuildContext context) {
-    return Card(
-      elevation: 8,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: _buildCardContent(context, isGrid: false),
-    );
+    return _buildCardContent(context, isGrid: false);
   }
 
   Widget _buildCardContent(BuildContext context, {required bool isGrid}) {
@@ -76,16 +59,24 @@ class AnimeCard extends StatelessWidget {
       children: [
         Hero(
           tag: 'poster-${anime.id}-$tag',
-          child: CachedNetworkImage(
-            imageUrl: getHighResImage(anime.poster),
-            fit: BoxFit.cover,
-            placeholder: (context, url) => Container(
-              color: theme.colorScheme.surface,
-              child: const Center(child: CircularProgressIndicator()),
-            ),
-            errorWidget: (context, url, error) => Container(
-              color: theme.colorScheme.errorContainer,
-              child: const Icon(Icons.error),
+          child: ClipRRect(
+            borderRadius:
+                (theme.cardTheme.shape as RoundedRectangleBorder).borderRadius,
+            child: CachedNetworkImage(
+              imageUrl: getHighResImage(anime.poster),
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Shimmer.fromColors(
+                baseColor: theme.colorScheme.primaryContainer,
+                highlightColor:
+                    theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
+                child: Container(
+                  color: theme.colorScheme.surface,
+                ),
+              ),
+              errorWidget: (context, url, error) => Container(
+                color: theme.colorScheme.errorContainer,
+                child: const Icon(Icons.error),
+              ),
             ),
           ),
         ),
@@ -111,7 +102,7 @@ class AnimeCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildScoreAndTypeRow(context),
+              _buildChipRow(context),
               const Spacer(),
               _buildStatusContainer(context),
               if (anime.episodeCount != null)
@@ -128,41 +119,18 @@ class AnimeCard extends StatelessWidget {
     );
   }
 
-  Widget _buildScoreAndTypeRow(BuildContext context) {
+  Widget _buildChipRow(BuildContext context) {
     final theme = Theme.of(context);
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment:
+          isListLayout ? MainAxisAlignment.start : MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (anime.score != null) _buildScoreContainer(theme),
-        if (anime.type != null && anime.rating == null)
+        if ((anime.type != null && anime.rating == null) || isListLayout)
           _buildTypeContainer(theme),
+        SizedBox(width: isListLayout ? 8 : 0),
         if (anime.rating != null) _buildRatingContainer(context),
       ],
-    );
-  }
-
-  Widget _buildScoreContainer(ThemeData theme) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.amber.withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 4)
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.star, size: 16, color: Colors.white),
-          const SizedBox(width: 4),
-          Text(
-            anime.score.toString(),
-            style: const TextStyle(
-                fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-        ],
-      ),
     );
   }
 
@@ -172,9 +140,6 @@ class AnimeCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.colorScheme.primaryContainer.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 4)
-        ],
       ),
       child: Text(
         anime.type!,
@@ -221,21 +186,18 @@ class AnimeCard extends StatelessWidget {
   }
 
   Widget _buildTitleText() {
-    return Hero(
-      tag: 'title-${anime.id}-$tag',
-      child: Text(
-        anime.name,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-          shadows: [
-            Shadow(offset: Offset(0, 1), blurRadius: 2, color: Colors.black45)
-          ],
-        ),
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
+    return Text(
+      anime.name,
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+        shadows: [
+          Shadow(offset: Offset(0, 1), blurRadius: 2, color: Colors.black45)
+        ],
       ),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
     );
   }
 
@@ -243,46 +205,48 @@ class AnimeCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Expanded(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Hero(
-            tag: 'poster-${anime.id}-$tag',
-            child: ClipRRect(
-              borderRadius:
-                  const BorderRadius.horizontal(left: Radius.circular(20)),
-              child: CachedNetworkImage(
-                imageUrl: getHighResImage(anime.poster),
-                width: 90,
-                height: double.infinity,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Container(
-                  color: theme.colorScheme.surface,
-                  child: const Center(child: CircularProgressIndicator()),
-                ),
-                errorWidget: (context, url, error) => Container(
-                  color: theme.colorScheme.errorContainer,
-                  child: const Icon(Icons.error),
+      child: Card(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Hero(
+              tag: 'poster-${anime.id}-$tag',
+              child: Card(
+                child: CachedNetworkImage(
+                  imageUrl: getHighResImage(anime.poster),
+                  width: 90,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: theme.colorScheme.primaryContainer,
+                    highlightColor: theme.colorScheme.primaryContainer
+                        .withValues(alpha: 0.5),
+                    child: Container(
+                      color: theme.colorScheme.surface,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: theme.colorScheme.errorContainer,
+                    child: const Icon(Icons.error),
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildListTitleText(theme),
-                  const SizedBox(height: 12),
-                  if (anime.status != null) _buildStatusContainer(context),
-                  if (anime.type != null) _buildListTypeContainer(theme),
-                  if (anime.score != null) _buildListScoreRow(theme),
-                ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildListTitleText(theme),
+                    const SizedBox(height: 12),
+                    _buildChipRow(context)
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -297,34 +261,6 @@ class AnimeCard extends StatelessWidget {
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
-    );
-  }
-
-  Widget _buildListTypeContainer(ThemeData theme) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        anime.type!,
-        style: TextStyle(
-            fontSize: 12, color: theme.colorScheme.onPrimaryContainer),
-      ),
-    );
-  }
-
-  Widget _buildListScoreRow(ThemeData theme) {
-    return Row(
-      children: [
-        const Icon(Icons.star, color: Colors.amber, size: 18),
-        const SizedBox(width: 4),
-        Text(
-          anime.score!.toString(),
-          style: theme.textTheme.bodyMedium,
-        ),
-      ],
     );
   }
 

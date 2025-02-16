@@ -1,5 +1,6 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:nekoflow/data/boxes/settings_box.dart';
 import 'package:nekoflow/data/models/settings/settings_model.dart';
@@ -117,7 +118,7 @@ class _ThemeScreenV2State extends State<ThemeScreenV2> {
             Expanded(
               child: GridView.builder(
                 shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   childAspectRatio: 1.2,
@@ -142,10 +143,10 @@ class _ThemeScreenV2State extends State<ThemeScreenV2> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.pop(),
           icon: Icon(
             HugeIcons.strokeRoundedArrowLeft01,
             size: 28,
@@ -165,6 +166,7 @@ class _ThemeScreenV2State extends State<ThemeScreenV2> {
         valueListenable: _settingsBox.listenable(),
         builder: (context, value, child) {
           return ListView(
+            physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             children: [
               _buildThemeModeContainer(),

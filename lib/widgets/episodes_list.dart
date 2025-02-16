@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:nekoflow/data/models/episodes_model.dart';
 import 'package:nekoflow/data/models/watchlist/watchlist_model.dart';
-import 'package:nekoflow/screens/main/stream/stream_screen.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:dismissible_page/dismissible_page.dart';
 
 class EpisodesList extends StatefulWidget {
   final AnimeItem anime;
-  final ValueNotifier<List<Episode>> episodes;
-  final ValueNotifier<bool> isLoading;
+  final List<Episode> episodes;
+  final bool isLoading;
   final int rangeSize;
   final List<String?>? watchedEpisodes;
 
@@ -31,15 +30,13 @@ class _EpisodesListState extends State<EpisodesList> {
   int _selectedRangeIndex = 0;
 
   void _navigateToStreamScreen(BuildContext context, Episode episode) {
-    context.pushTransparentRoute(
-      StreamScreen(
-        episodes: widget.episodes.value,
-        anime: AnimeItem(
-            name: widget.anime.name,
-            poster: widget.anime.poster,
-            id: widget.anime.id),
-        episode: episode,
-      ),
+    context.push(
+      '/stream',
+      extra: {
+        'episodes': widget.episodes,
+        'anime': widget.anime,
+        'episode': episode,
+      },
     );
   }
 
@@ -64,48 +61,38 @@ class _EpisodesListState extends State<EpisodesList> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: widget.isLoading,
-      builder: (context, isLoading, _) {
-        return ValueListenableBuilder<List<Episode>>(
-          valueListenable: widget.episodes,
-          builder: (context, episodes, _) {
-            final groupedEpisodes = _getGroupedEpisodes(episodes);
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _EpisodesHeader(
-                  episodes: episodes,
-                  rangeSize: widget.rangeSize,
-                  groupedEpisodes: groupedEpisodes,
-                  isGridLayout: _isGridLayout,
-                  selectedRangeIndex: _selectedRangeIndex,
-                  onLayoutChanged: (isGrid) {
-                    setState(() => _isGridLayout = isGrid);
-                  },
-                  onRangeChanged: (index) {
-                    setState(() => _selectedRangeIndex = index);
-                  },
-                ),
-                isLoading
-                    ? _buildShimmerList(context)
-                    : _EpisodesView(
-                        episodes: episodes,
-                        watchedEpisodes: widget.watchedEpisodes,
-                        groupedEpisodes: groupedEpisodes,
-                        rangeSize: widget.rangeSize,
-                        isGridLayout: _isGridLayout,
-                        selectedRangeIndex: _selectedRangeIndex,
-                        onEpisodeSelected: (episode) =>
-                            _navigateToStreamScreen(context, episode),
-                      ),
-                const SizedBox(height: 25),
-              ],
-            );
+    final episodes = widget.episodes;
+    final groupedEpisodes = _getGroupedEpisodes(episodes);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _EpisodesHeader(
+          episodes: episodes,
+          rangeSize: widget.rangeSize,
+          groupedEpisodes: groupedEpisodes,
+          isGridLayout: _isGridLayout,
+          selectedRangeIndex: _selectedRangeIndex,
+          onLayoutChanged: (isGrid) {
+            setState(() => _isGridLayout = isGrid);
           },
-        );
-      },
+          onRangeChanged: (index) {
+            setState(() => _selectedRangeIndex = index);
+          },
+        ),
+        widget.isLoading
+            ? _buildShimmerList(context)
+            : _EpisodesView(
+                episodes: episodes,
+                watchedEpisodes: widget.watchedEpisodes,
+                groupedEpisodes: groupedEpisodes,
+                rangeSize: widget.rangeSize,
+                isGridLayout: _isGridLayout,
+                selectedRangeIndex: _selectedRangeIndex,
+                onEpisodeSelected: (episode) =>
+                    _navigateToStreamScreen(context, episode),
+              ),
+        const SizedBox(height: 25),
+      ],
     );
   }
 
@@ -134,7 +121,7 @@ class _EpisodesListState extends State<EpisodesList> {
   }
 }
 
-class _EpisodesHeader extends StatelessWidget {
+class _EpisodesHeader extends StatefulWidget {
   final List<Episode> episodes;
   final List<Map<String, List<Episode>>> groupedEpisodes;
   final int rangeSize;
@@ -154,6 +141,62 @@ class _EpisodesHeader extends StatelessWidget {
   });
 
   @override
+  State<_EpisodesHeader> createState() => _EpisodesHeaderState();
+}
+
+class _EpisodesHeaderState extends State<_EpisodesHeader> {
+  void _showRangeSelectionModal() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 2,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+            ),
+            itemCount: widget.groupedEpisodes.length,
+            itemBuilder: (context, index) {
+              final isSelected = index ==
+                  widget.selectedRangeIndex; // Check if this index is selected
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    widget.onRangeChanged(index);
+                  });
+                  context.pop();
+                },
+                child: Card(
+                  color: isSelected
+                      ? Theme.of(context)
+                          .colorScheme
+                          .secondaryContainer // Highlight selected range
+                      : Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withValues(alpha: 0.8),
+                  child: Center(
+                    child: Text(
+                      widget.groupedEpisodes[index].keys.first,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,29 +207,38 @@ class _EpisodesHeader extends StatelessWidget {
         ),
         Row(
           children: [
-            if (groupedEpisodes.isNotEmpty)
-              DropdownButton<int>(
-                value: selectedRangeIndex,
-                onChanged: (newIndex) {
-                  if (newIndex != null) {
-                    onRangeChanged(newIndex);
-                  }
-                },
-                items: groupedEpisodes.asMap().entries.map((entry) {
-                  return DropdownMenuItem<int>(
-                    value: entry.key,
-                    child: Text(
-                      entry.value.keys.first,
-                      style: Theme.of(context).textTheme.labelMedium,
+            if (widget.groupedEpisodes.isNotEmpty)
+              FilledButton.tonalIcon(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(
+                      Theme.of(context).colorScheme.primaryContainer,
                     ),
-                  );
-                }).toList(),
+                  ),
+                  onPressed: _showRangeSelectionModal,
+                  label: Text(
+                    widget
+                        .groupedEpisodes[widget.selectedRangeIndex].keys.first,
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  icon: HugeIcon(
+                    icon: HugeIcons.strokeRoundedArrowDown01,
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    size: 18,
+                  )),
+            IconButton.filledTonal(
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(
+                  Theme.of(context).colorScheme.primaryContainer,
+                ),
               ),
-            IconButton(
-              icon: Icon(
-                isGridLayout ? Icons.view_list : Icons.grid_view,
+              icon: HugeIcon(
+                icon: widget.isGridLayout
+                    ? HugeIcons.strokeRoundedListView
+                    : HugeIcons.strokeRoundedGridView,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                size: 18,
               ),
-              onPressed: () => onLayoutChanged(!isGridLayout),
+              onPressed: () => widget.onLayoutChanged(!widget.isGridLayout),
             ),
           ],
         ),
@@ -216,7 +268,9 @@ class _EpisodesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (groupedEpisodes.isEmpty) {
-      return const Center(child: Text('No episodes available'));
+      return SizedBox(
+          height: 50,
+          child: const Center(child: Text('No episodes available')));
     }
 
     final currentEpisodes = groupedEpisodes[selectedRangeIndex].values.first;

@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:lottie/lottie.dart';
+import 'package:nekoflow/data/boxes/user_box.dart';
 import 'package:nekoflow/data/models/watchlist/watchlist_model.dart';
-import 'package:nekoflow/screens/main/settings/settings_screen.dart';
 import 'package:nekoflow/widgets/spotlight_card.dart';
 import 'package:nekoflow/widgets/trending_animes.dart';
 import 'package:shimmer/shimmer.dart';
@@ -15,16 +16,16 @@ class HomeScreen extends StatefulWidget {
   static const double _horizontalPadding = 20.0;
   static const double _sectionSpacing = 50.0;
 
-  final String name;
-
-  const HomeScreen({super.key, this.name = 'Guest'});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final AnimeService _animeService = AnimeService();
+  late AnimeService _animeService;
+  late UserBox _userBox;
+  String name = '';
 
   List<TopAiringAnime> _topAiring = [];
   List<LatestCompletedAnime> _completed = [];
@@ -40,7 +41,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _animeService = AnimeService();
+    _initUserBox();
     _fetchData();
+  }
+
+  Future<void> _initUserBox() async {
+    _userBox = UserBox();
+    await _userBox.init();
+    name = _userBox.getUser().name;
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _animeService.dispose();
   }
 
   Future<void> _fetchData() async {
@@ -70,10 +86,15 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  @override
-  void dispose() {
-    _animeService.dispose();
-    super.dispose();
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning';
+    } else if (hour < 17) {
+      return 'Good Afternoon';
+    } else {
+      return 'Good Evening';
+    }
   }
 
   Widget _buildHeaderSection(ThemeData theme) {
@@ -83,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            "Hello ${widget.name}, What's on your mind today?",
+            "${_getGreeting()}, $name! Ready to explore anime?",
             style: theme.textTheme.headlineLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
@@ -174,15 +195,30 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title,
-            style: theme.textTheme.headlineMedium
-                ?.copyWith(fontWeight: FontWeight.w700)),
+        Row(
+          children: [
+            Text(
+              title,
+              style: theme.textTheme.headlineMedium
+                  ?.copyWith(fontWeight: FontWeight.w700),
+            ),
+            const Spacer(),
+            IconButton(
+                onPressed: () {},
+                icon: HugeIcon(
+                  icon: HugeIcons.strokeRoundedArrowRight01,
+                  color: theme.colorScheme.onSurface,
+                  size: 28,
+                )),
+          ],
+        ),
         const SizedBox(height: 10),
         _isLoading
-            ? _buildShimmerLoading(theme, 0.42)
+            ? _buildShimmerLoading(theme, 0.405)
             : SnappingScroller(
                 showIndicators: false,
                 widthFactor: 0.47,
+                loop: false,
                 autoScroll: false,
                 children: animeList
                     .map((anime) => AnimeCard(anime: anime, tag: tag))
@@ -261,11 +297,14 @@ class _HomeScreenState extends State<HomeScreen> {
         forceMaterialTransparency: true,
         actions: [
           IconButton(
-            onPressed: () => Navigator.push(context,
-                CupertinoPageRoute(builder: (context) => SettingsScreen())),
-            icon: HugeIcon(
-                icon: HugeIcons.strokeRoundedSettings01,
-                color: theme.colorScheme.onSurface),
+            onPressed: () => context.push('/settings'),
+            icon: ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                  theme.colorScheme.onSurface, BlendMode.srcIn),
+              child: Lottie.asset(
+                'lib/assets/lotties/settings.json',
+              ),
+            ),
           )
         ],
       ),

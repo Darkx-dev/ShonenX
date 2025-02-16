@@ -1,5 +1,6 @@
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:nekoflow/data/boxes/watchlist_box.dart';
 import 'package:nekoflow/data/models/episodes_model.dart';
@@ -9,7 +10,6 @@ import 'package:nekoflow/data/services/anime_service.dart';
 import 'package:nekoflow/widgets/player/custom_controls.dart';
 import 'package:nekoflow/widgets/player/video_player.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
 
 class StreamScreen extends StatefulWidget {
   final List<Episode> episodes;
@@ -48,9 +48,6 @@ class StreamScreenState extends State<StreamScreen> {
   @override
   void initState() {
     super.initState();
-    // Enable wakelock when entering this screen
-    WakelockPlus.enable();
-
     _animeService = AnimeService();
     _watchlistBox = WatchlistBox();
     _autoScrollController = AutoScrollController();
@@ -97,11 +94,11 @@ class StreamScreenState extends State<StreamScreen> {
             content: Text('Would you like to resume from where you left off?'),
             actions: [
               TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
+                onPressed: () => context.pop(true),
                 child: Text('Resume'),
               ),
               TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
+                onPressed: () => context.pop(false),
                 child: Text('Start Over'),
               ),
             ],
@@ -164,6 +161,7 @@ class StreamScreenState extends State<StreamScreen> {
         BetterPlayerConfiguration(
             autoPlay: true,
             autoDispose: true,
+            allowedScreenSleep: false,
             fit: BoxFit.contain,
             startAt: startPosition, // Use the captured position
             errorBuilder: (context, errorMessage) => Center(
@@ -430,7 +428,7 @@ class StreamScreenState extends State<StreamScreen> {
                 ),
                 onTap: () {
                   onChanged(item);
-                  Navigator.of(context).pop();
+                  context.pop();
                 },
               );
             }).toList(),
@@ -496,7 +494,7 @@ class StreamScreenState extends State<StreamScreen> {
                   setState(() {
                     _selectedRangeIndex = index;
                   });
-                  Navigator.of(context).pop();
+                  context.pop();
                 },
                 child: Card(
                   color: isSelected
@@ -601,8 +599,6 @@ class StreamScreenState extends State<StreamScreen> {
 
   @override
   void dispose() {
-    // Disable wakelock when leaving this screen
-    WakelockPlus.disable();
     _autoScrollController.dispose();
     _animeService.dispose();
     _playerController?.dispose();
