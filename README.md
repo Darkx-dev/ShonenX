@@ -193,6 +193,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Developer**: Roshan Kumar
 - **GitHub**: [@Darkx-dev](https://github.com/Darkx-dev)
 - **Email**: [darkx.dev.23@gmail.com](mailto:darkx.dev.23@gmail.com)
+- **Discord**: [Join our Community](https://discord.gg/6SDWdAyyQ5)
 
 ---
 
