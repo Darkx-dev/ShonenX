@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:shonenx/api/models/anilist/anilist_media_list.dart';
+import 'package:shonenx/core/models/anilist/anilist_media_list.dart';
 import 'package:shonenx/helpers/navigation.dart';
 import 'package:shonenx/providers/anilist/anilist_medialist_provider.dart';
 import 'package:shonenx/providers/anilist/anilist_user_provider.dart';

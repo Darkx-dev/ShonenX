@@ -1,5 +1,5 @@
-import 'package:shonenx/api/models/anilist/anilist_media_list.dart';
-import 'package:shonenx/api/models/anime/anime_model.dep.dart';
+import 'package:shonenx/core/models/anilist/anilist_media_list.dart';
+import 'package:shonenx/core/models/anime/anime_model.dep.dart';
 
 class Featured {
   final String? path;

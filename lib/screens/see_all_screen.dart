@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shonenx/api/models/anime/page_model.dart';
-import 'package:shonenx/api/sources/anime/anime_provider.dart';
+import 'package:shonenx/core/models/anime/page_model.dart';
+import 'package:shonenx/core/sources/anime/anime_provider.dart';
 import 'package:shonenx/helpers/provider.dart';
 
 class SeeAllScreen extends ConsumerStatefulWidget {

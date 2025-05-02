@@ -4,10 +4,10 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:html/dom.dart' as dom;
 // Will change depecrated models to new models
-import 'package:shonenx/api/models/anime/anime_model.dep.dart';
-import 'package:shonenx/api/models/anime/episode_model.dart';
-import 'package:shonenx/api/models/anime/page_model.dart';
-import 'package:shonenx/api/models/anime/server_model.dart';
+import 'package:shonenx/core/models/anime/anime_model.dep.dart';
+import 'package:shonenx/core/models/anime/episode_model.dart';
+import 'package:shonenx/core/models/anime/page_model.dart';
+import 'package:shonenx/core/models/anime/server_model.dart';
 
 SearchPage parseSearch(dom.Document document, String baseUrl,
     {required String keyword, required int page}) {

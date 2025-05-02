@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shonenx/api/registery/anime_source_registery_provider.dart';
+import 'package:shonenx/core/registery/anime_source_registery_provider.dart';
 import 'package:shonenx/providers/homepage_provider.dart';
 import 'package:shonenx/providers/selected_provider.dart';
 import 'package:shonenx/screens/settings/appearance/theme_screen.dart';

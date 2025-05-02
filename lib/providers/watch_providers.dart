@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
-import 'package:shonenx/api/models/anime/episode_model.dart';
-import 'package:shonenx/api/models/anime/source_model.dart';
-import 'package:shonenx/api/registery/anime_source_registery_provider.dart';
-import 'package:shonenx/api/sources/anime/anime_provider.dart';
+import 'package:shonenx/core/models/anime/episode_model.dart';
+import 'package:shonenx/core/models/anime/source_model.dart';
+import 'package:shonenx/core/registery/anime_source_registery_provider.dart';
+import 'package:shonenx/core/sources/anime/anime_provider.dart';
 import 'package:shonenx/data/hive/boxes/settings_box.dart';
 import 'package:shonenx/utils/extractors.dart' as extractor;
 

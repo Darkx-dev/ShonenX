@@ -1,7 +1,7 @@
 import 'dart:developer' as dev;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shonenx/api/sources/anime/anime_provider.dart';
-import 'package:shonenx/api/registery/anime_source_registery_provider.dart';
+import 'package:shonenx/core/sources/anime/anime_provider.dart';
+import 'package:shonenx/core/registery/anime_source_registery_provider.dart';
 import 'package:shonenx/providers/selected_provider.dart';
 
 /// Get the current anime provider based on the selected provider key

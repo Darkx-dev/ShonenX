@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:shonenx/api/sources/anime/anime_provider.dart';
+import 'package:shonenx/core/sources/anime/anime_provider.dart';
 import 'package:shonenx/providers/watch_providers.dart';
 import 'package:shonenx/utils/formatter.dart';
 import 'package:shonenx/widgets/ui/shonenx_dropdown.dart';

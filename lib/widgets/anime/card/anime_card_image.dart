@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:shonenx/api/models/anilist/anilist_media_list.dart';
+import 'package:shonenx/core/models/anilist/anilist_media_list.dart';
 import 'package:shonenx/widgets/anime/card/anime_card_shimmer.dart';
 
 class AnimeImage extends StatelessWidget {

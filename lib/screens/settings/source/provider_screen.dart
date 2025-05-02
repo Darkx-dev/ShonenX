@@ -7,7 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:shonenx/api/registery/anime_source_registery_provider.dart';
+import 'package:shonenx/core/registery/anime_source_registery_provider.dart';
 import 'package:shonenx/providers/selected_provider.dart';
 
 // State classes for better type safety

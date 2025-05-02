@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:developer' as dev;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shonenx/api/sources/anime/animekai.dart';
-import 'package:shonenx/api/sources/anime/animepahe.dart';
-import 'package:shonenx/api/sources/anime/aniwatch/aniwatch.dart';
-import 'package:shonenx/api/sources/anime/aniwatch/hianime.dart';
-import 'package:shonenx/api/registery/anime_source_registery.dart';
-import 'package:shonenx/api/sources/anime/anime_provider.dart';
-import 'package:shonenx/api/sources/anime/aniwatch/kaido.dart';
+import 'package:shonenx/core/sources/anime/animekai.dart';
+import 'package:shonenx/core/sources/anime/animepahe.dart';
+import 'package:shonenx/core/sources/anime/aniwatch/aniwatch.dart';
+import 'package:shonenx/core/sources/anime/aniwatch/hianime.dart';
+import 'package:shonenx/core/registery/anime_source_registery.dart';
+import 'package:shonenx/core/sources/anime/anime_provider.dart';
+import 'package:shonenx/core/sources/anime/aniwatch/kaido.dart';
 import 'package:shonenx/providers/selected_provider.dart';
 
 /// State class for the anime source registry

@@ -1,7 +1,7 @@
 import 'dart:developer' as dev;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shonenx/api/anilist/services/anilist_service.dart';
-import 'package:shonenx/api/models/anime/page_model.dart';
+import 'package:shonenx/core/anilist/services/anilist_service.dart';
+import 'package:shonenx/core/models/anime/page_model.dart';
 
 // Provider for AnilistService to enable dependency injection
 final anilistServiceProvider =

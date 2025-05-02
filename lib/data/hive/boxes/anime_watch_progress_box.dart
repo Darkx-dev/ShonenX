@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:shonenx/api/models/anilist/anilist_media_list.dart';
+import 'package:shonenx/core/models/anilist/anilist_media_list.dart';
 import 'package:shonenx/data/hive/models/anime_watch_progress_model.dart';
 import 'dart:developer' as dev;
 
@@ -199,5 +199,16 @@ class AnimeWatchProgressBox {
     final entry = getEntry(animeId);
     if (entry == null) return [];
     return entry.episodesProgress.values.toList();
+  }
+
+  /// Closes the Hive box (optional, for cleanup).
+  Future<void> close() async {
+    try {
+      await _box?.close();
+      _box = null;
+    } catch (e, stackTrace) {
+      dev.log('Error closing SettingsBox: $e', stackTrace: stackTrace);
+      rethrow;
+    }
   }
 }

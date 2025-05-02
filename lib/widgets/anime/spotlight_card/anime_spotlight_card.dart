@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:shonenx/api/models/anilist/anilist_media_list.dart';
+import 'package:shonenx/core/models/anilist/anilist_media_list.dart';
 import 'package:shonenx/utils/html_parser.dart';
 import 'package:google_fonts/google_fonts.dart';
 

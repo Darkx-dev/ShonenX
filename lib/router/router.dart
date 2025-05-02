@@ -1,36 +1,57 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:shonenx/api/models/anilist/anilist_media_list.dart';
-import 'package:shonenx/data/hive/boxes/anime_watch_progress_box.dart';
+import 'package:shonenx/core/models/anilist/anilist_media_list.dart';
+import 'package:shonenx/providers/hive_service_provider.dart';
 import 'package:shonenx/screens/browse_screen.dart';
 import 'package:shonenx/screens/continue_watching_screen.dart';
 import 'package:shonenx/screens/details_screen.dart';
 import 'package:shonenx/screens/error_screen.dart';
 import 'package:shonenx/screens/home_screen.dart';
-import 'package:shonenx/screens/loading_screen.dart'; // New import
+import 'package:shonenx/screens/loading_screen.dart';
 import 'package:shonenx/screens/see_all_screen.dart';
+import 'package:shonenx/screens/settings/about/about_screen.dart';
+import 'package:shonenx/screens/settings/about/help_support_screen.dart';
 import 'package:shonenx/screens/settings/about/privacy_policy_screen.dart';
 import 'package:shonenx/screens/settings/about/terms_screen.dart';
-import 'package:shonenx/screens/settings/settings_screen.dart';
-import 'package:shonenx/screens/settings/about/about_screen.dart';
 import 'package:shonenx/screens/settings/appearance/theme_screen.dart';
-import 'package:shonenx/screens/settings/about/help_support_screen.dart';
-import 'package:shonenx/screens/settings/profile/profile_screen.dart';
-import 'package:shonenx/screens/settings/source/provider_screen.dart';
-import 'package:shonenx/screens/settings/profile/sync_screen.dart';
-import 'package:shonenx/screens/settings/player/player_screen.dart';
 import 'package:shonenx/screens/settings/appearance/ui_screen.dart';
+import 'package:shonenx/screens/settings/player/player_screen.dart';
+import 'package:shonenx/screens/settings/profile/profile_screen.dart';
+import 'package:shonenx/screens/settings/profile/sync_screen.dart';
+import 'package:shonenx/screens/settings/settings_screen.dart';
+import 'package:shonenx/screens/settings/source/provider_screen.dart';
 import 'package:shonenx/screens/watch_screen/watch_screen.dart';
 import 'package:shonenx/screens/watchlist_screen.dart';
 import 'package:shonenx/widgets/ui/layouts/settings_layout.dart';
 
+// Navigation item configuration
+class NavItem {
+  final String path;
+  final IconData icon;
+  final Widget screen;
+
+  NavItem({required this.path, required this.icon, required this.screen});
+}
+
+final List<NavItem> navItems = [
+  NavItem(path: '/', icon: Iconsax.home, screen: const HomeScreen()),
+  NavItem(
+      path: '/browse', icon: Iconsax.discover_1, screen: const BrowseScreen()),
+  NavItem(
+      path: '/watchlist',
+      icon: Iconsax.bookmark,
+      screen: const WatchlistScreen()),
+];
+
+// Router configuration
 final GoRouter router = GoRouter(
   errorBuilder: (context, state) => ErrorScreen(error: state.error),
-  initialLocation: '/loading', // Set initial route to loading screen
-  routes: <RouteBase>[
+  initialLocation: '/loading',
+  routes: [
     GoRoute(
       path: '/loading',
       builder: (context, state) => const LoadingScreen(),
@@ -38,246 +59,176 @@ final GoRouter router = GoRouter(
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) =>
           AppRouterScreen(navigationShell: navigationShell),
-      branches: [
-        _buildHomeBranch(),
-        _buildBrowseBranch(),
-        _buildWatchlistBranch(),
-      ],
+      branches: navItems.asMap().entries.map((entry) {
+        // final index = entry.key;
+        final item = entry.value;
+        return StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: item.path,
+              builder: (context, state) {
+                if (item.path == '/browse') {
+                  return BrowseScreen(
+                    key: ValueKey(state.uri.toString()),
+                    keyword: state.uri.queryParameters['keyword'],
+                  );
+                }
+                return item.screen;
+              },
+            ),
+          ],
+        );
+      }).toList(),
     ),
     _buildSettingsRoute(),
-    _buildSeeAllRoute(),
-    _buildContinueAllRoute(),
-    _buildDetailsRoute(),
-    _buildWatchRoute(),
-    _buildCatchAllRoute(),
-  ],
-);
-
-StatefulShellBranch _buildHomeBranch() {
-  return StatefulShellBranch(routes: [
     GoRoute(
-      path: '/',
-      pageBuilder: (context, state) => const MaterialPage(child: HomeScreen()),
-    ),
-  ]);
-}
-
-StatefulShellBranch _buildBrowseBranch() {
-  return StatefulShellBranch(routes: [
-    GoRoute(
-      path: '/browse',
-      pageBuilder: (context, state) => MaterialPage(
-        child: BrowseScreen(
-          key: ValueKey(state.uri.toString()),
-          keyword: state.uri.queryParameters['keyword'],
-        ),
-      ),
-    ),
-  ]);
-}
-
-StatefulShellBranch _buildWatchlistBranch() {
-  return StatefulShellBranch(routes: [
-    GoRoute(
-      path: '/watchlist',
-      pageBuilder: (context, state) =>
-          const MaterialPage(child: WatchlistScreen()),
-    ),
-  ]);
-}
-
-GoRoute _buildContinueAllRoute() {
-  return GoRoute(
-    path: '/continue-all',
-    builder: (context, state) => ContinueWatchingScreen(
-      animeWatchProgressBox: AnimeWatchProgressBox()..init(),
-    ),
-  );
-}
-
-GoRoute _buildSettingsRoute() {
-  return GoRoute(
-    path: '/settings',
-    pageBuilder: (context, state) =>
-        const MaterialPage(child: SettingsScreen()),
-    routes: [
-      _buildProfileSettingsRoute(),
-      _buildProviderSettingsRoute(),
-      _buildThemeSettingsRoute(),
-      _buildUiSettingsRoute(),
-      _buildAboutSettingsRoute(),
-      _buildPlayerSettingsRoute(),
-      _buildSupportSettingsRoute(),
-    ],
-  );
-}
-
-GoRoute _buildProfileSettingsRoute() {
-  return GoRoute(
-    path: 'profile',
-    pageBuilder: (context, state) => const MaterialPage(
-        child:
-            SettingsLayout(title: "Profile", child: ProfileSettingsScreen())),
-    routes: [
-      GoRoute(
-        path: 'sync',
-        pageBuilder: (context, state) => const MaterialPage(
-            child: SettingsLayout(title: "Sync", child: SyncSettingsScreen())),
-      ),
-    ],
-  );
-}
-
-GoRoute _buildProviderSettingsRoute() {
-  return GoRoute(
-    path: 'providers',
-    pageBuilder: (context, state) =>
-        const MaterialPage(child: ProviderSettingsScreen()),
-  );
-}
-
-GoRoute _buildThemeSettingsRoute() {
-  return GoRoute(
-    path: 'theme',
-    pageBuilder: (context, state) => const MaterialPage(
-        child: SettingsLayout(title: "Theme", child: ThemeSettingsScreen())),
-  );
-}
-
-GoRoute _buildUiSettingsRoute() {
-  return GoRoute(
-    path: 'ui',
-    pageBuilder: (context, state) => const MaterialPage(
-        child:
-            SettingsLayout(title: "User Interface", child: UISettingsScreen())),
-  );
-}
-
-GoRoute _buildAboutSettingsRoute() {
-  return GoRoute(
-    path: 'about',
-    pageBuilder: (context, state) => const MaterialPage(
-        child: SettingsLayout(title: "About", child: AboutScreen())),
-    routes: [
-      GoRoute(
-        path: 'terms',
-        pageBuilder: (context, state) => const MaterialPage(
-            child: SettingsLayout(
-                title: "Terms of Service", child: TermsOfServiceScreen())),
-      ),
-      GoRoute(
-        path: 'privacy',
-        pageBuilder: (context, state) => const MaterialPage(
-            child: SettingsLayout(
-                title: "Privacy Policy", child: PrivacyPolicyScreen())),
-      ),
-    ],
-  );
-}
-
-GoRoute _buildPlayerSettingsRoute() {
-  return GoRoute(
-    path: 'player',
-    pageBuilder: (context, state) => const MaterialPage(
-        child: SettingsLayout(title: "Player", child: PlayerSettingsScreen())),
-  );
-}
-
-GoRoute _buildSupportSettingsRoute() {
-  return GoRoute(
-    path: 'support',
-    pageBuilder: (context, state) => const MaterialPage(
-        child: SettingsLayout(
-            title: "Help & Support", child: HelpSupportScreen())),
-  );
-}
-
-GoRoute _buildSeeAllRoute() {
-  return GoRoute(
-    path: '/all/:path',
-    pageBuilder: (context, state) => MaterialPage(
-      child: SeeAllScreen(
+      path: '/all/:path',
+      builder: (context, state) => SeeAllScreen(
         title: state.uri.queryParameters['title'] ?? 'Untitled',
         path: state.pathParameters['path'] ?? '',
       ),
     ),
-  );
-}
-
-GoRoute _buildDetailsRoute() {
-  return GoRoute(
-    path: '/details',
-    pageBuilder: (context, state) => MaterialPage(
-      child: AnimeDetailsScreen(
+    GoRoute(
+      path: '/continue-all',
+      builder: (context, state) => Consumer(
+        builder: (context, ref, _) {
+          final hiveService = ref.watch(hiveServiceProvider).value;
+          return ContinueWatchingScreen(
+            animeWatchProgressBox: hiveService!.progress,
+          );
+        },
+      ),
+    ),
+    GoRoute(
+      path: '/details',
+      builder: (context, state) => AnimeDetailsScreen(
         anime: state.extra as Media,
         tag: state.uri.queryParameters['tag'] ?? '',
       ),
     ),
-  );
-}
-
-GoRoute _buildWatchRoute() {
-  return GoRoute(
-    path: '/watch/:id',
-    pageBuilder: (context, state) {
-      return MaterialPage(
-        child: PopScope(
-          onPopInvokedWithResult: (didPop, result) {
-            if (didPop) {
-              return;
-            }
-            showExitConfirmationDialog(context);
-          },
-          child: WatchScreen(
-            animeId: state.pathParameters['id']!,
-            episode: state.uri.queryParameters['episode'] != null
-                ? int.tryParse(state.uri.queryParameters['episode']!)
-                : 1,
-            animeMedia: state.extra as Media,
-            startAt: Duration(
-                seconds:
-                    int.tryParse(state.uri.queryParameters['startAt'] ?? '0') ??
-                        0),
-            animeName: state.uri.queryParameters['animeName']!,
-          ),
+    GoRoute(
+      path: '/watch/:id',
+      builder: (context, state) => WatchScreen(
+        animeId: state.pathParameters['id']!,
+        episode: int.tryParse(state.uri.queryParameters['episode'] ?? '1') ?? 1,
+        animeMedia: state.extra as Media,
+        startAt: Duration(
+          seconds:
+              int.tryParse(state.uri.queryParameters['startAt'] ?? '0') ?? 0,
         ),
-      );
-    },
-  );
-}
-
-GoRoute _buildCatchAllRoute() {
-  return GoRoute(
-    path: '*',
-    pageBuilder: (context, state) => MaterialPage(
-      child: ErrorScreen(error: Exception('Page not found')),
+        animeName: state.uri.queryParameters['animeName']!,
+      ),
     ),
+  ],
+);
+
+// Settings route configuration
+GoRoute _buildSettingsRoute() {
+  return GoRoute(
+    path: '/settings',
+    builder: (context, state) => const SettingsScreen(),
+    routes: [
+      ..._buildSettingsSubRoutes([
+        _SettingsRouteConfig(
+          path: 'profile',
+          title: 'Profile',
+          screen: const ProfileSettingsScreen(),
+          subRoutes: [
+            _SettingsRouteConfig(
+              path: 'sync',
+              title: 'Sync',
+              screen: const SyncSettingsScreen(),
+            ),
+          ],
+        ),
+        _SettingsRouteConfig(
+          path: 'providers',
+          title: 'Providers',
+          screen: const ProviderSettingsScreen(),
+        ),
+        _SettingsRouteConfig(
+          path: 'theme',
+          title: 'Theme',
+          screen: const ThemeSettingsScreen(),
+        ),
+        _SettingsRouteConfig(
+          path: 'ui',
+          title: 'User Interface',
+          screen: const UISettingsScreen(),
+        ),
+        _SettingsRouteConfig(
+          path: 'about',
+          title: 'About',
+          screen: const AboutScreen(),
+          subRoutes: [
+            _SettingsRouteConfig(
+              path: 'terms',
+              title: 'Terms of Service',
+              screen: const TermsOfServiceScreen(),
+            ),
+            _SettingsRouteConfig(
+              path: 'privacy',
+              title: 'Privacy Policy',
+              screen: const PrivacyPolicyScreen(),
+            ),
+          ],
+        ),
+        _SettingsRouteConfig(
+          path: 'player',
+          title: 'Player',
+          screen: const PlayerSettingsScreen(),
+        ),
+        _SettingsRouteConfig(
+          path: 'support',
+          title: 'Help & Support',
+          screen: const HelpSupportScreen(),
+        ),
+      ]),
+    ],
   );
 }
 
-class AppRouterScreen extends StatefulWidget {
+class _SettingsRouteConfig {
+  final String path;
+  final String title;
+  final Widget screen;
+  final List<_SettingsRouteConfig> subRoutes;
+
+  _SettingsRouteConfig({
+    required this.path,
+    required this.title,
+    required this.screen,
+    this.subRoutes = const [],
+  });
+}
+
+List<GoRoute> _buildSettingsSubRoutes(List<_SettingsRouteConfig> configs) {
+  return configs.map((config) {
+    return GoRoute(
+      path: config.path,
+      builder: (context, state) => SettingsLayout(
+        title: config.title,
+        child: config.screen,
+      ),
+      routes: _buildSettingsSubRoutes(config.subRoutes),
+    );
+  }).toList();
+}
+
+// AppRouterScreen
+class AppRouterScreen extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
   const AppRouterScreen({super.key, required this.navigationShell});
 
   @override
-  State<AppRouterScreen> createState() => _AppRouterScreenState();
-}
-
-class _AppRouterScreenState extends State<AppRouterScreen> {
-  DateTime? lastPressed;
-
-  @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isWideScreen = MediaQuery.of(context).size.width > 800;
 
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        if (didPop) {
-          return;
-        }
+        if (didPop) return;
         showExitConfirmationDialog(context, isSystemExit: true);
       },
       child: Scaffold(
@@ -292,8 +243,9 @@ class _AppRouterScreenState extends State<AppRouterScreen> {
                 top: isWideScreen ? 15 : 0,
               ),
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: widget.navigationShell),
+                borderRadius: BorderRadius.circular(15),
+                child: navigationShell,
+              ),
             ),
             Positioned(
               left: isWideScreen ? 10 : 0,
@@ -302,8 +254,8 @@ class _AppRouterScreenState extends State<AppRouterScreen> {
               bottom: 10,
               child: SafeArea(
                 child: isWideScreen
-                    ? _buildFloatingSideNav(theme)
-                    : _buildCrystalBottomNav(theme),
+                    ? _buildFloatingSideNav(context)
+                    : _buildCrystalBottomNav(context),
               ),
             ),
           ],
@@ -312,16 +264,14 @@ class _AppRouterScreenState extends State<AppRouterScreen> {
     );
   }
 
-  Widget _buildFloatingSideNav(ThemeData theme) {
+  Widget _buildFloatingSideNav(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: 75,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(35),
         color: theme.colorScheme.surface,
-        border: Border.all(
-          color: theme.colorScheme.primary,
-          width: 1,
-        ),
+        border: Border.all(color: theme.colorScheme.primary),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -331,48 +281,49 @@ class _AppRouterScreenState extends State<AppRouterScreen> {
         ],
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(3, (index) {
-          final isSelected = widget.navigationShell.currentIndex == index;
-          final borderRadius = BorderRadius.only(
-            topLeft: index == 0 ? Radius.circular(100) : Radius.zero,
-            topRight: index == 0 ? Radius.circular(100) : Radius.zero,
-            bottomLeft: index == 2 ? Radius.circular(100) : Radius.zero,
-            bottomRight: index == 2 ? Radius.circular(100) : Radius.zero,
-          );
-
+        children: navItems.asMap().entries.map((entry) {
+          final index = entry.key;
+          final item = entry.value;
+          final isSelected = navigationShell.currentIndex == index;
           return Expanded(
-            child: ClipRRect(
-              borderRadius: borderRadius,
-              child: InkWell(
-                onTap: () => widget.navigationShell.goBranch(index),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: borderRadius,
-                    color: isSelected
-                        ? theme.colorScheme.primary.withOpacity(0.2)
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: index == 0
+                    ? BorderRadius.only(
+                        topLeft: Radius.circular(50),
+                        topRight: Radius.circular(50))
+                    : index == (navItems.length - 1)
+                        ? BorderRadius.only(
+                            bottomLeft: Radius.circular(50),
+                            bottomRight: Radius.circular(50),
+                          )
                         : null,
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  margin: const EdgeInsets.all(5),
-                  child: Center(
-                    child: Icon(
-                      _getIconForIndex(index),
-                      color: isSelected
-                          ? theme.colorScheme.primary
-                          : theme.colorScheme.onSurface,
-                    ),
+                color: isSelected
+                    ? theme.colorScheme.primary.withOpacity(0.2)
+                    : null,
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              margin: const EdgeInsets.all(5),
+              child: InkWell(
+                onTap: () => navigationShell.goBranch(index),
+                child: Center(
+                  child: Icon(
+                    item.icon,
+                    color: isSelected
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.onSurface,
                   ),
                 ),
               ),
             ),
           );
-        }),
+        }).toList(),
       ),
     );
   }
 
-  Widget _buildCrystalBottomNav(ThemeData theme) {
+  Widget _buildCrystalBottomNav(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.sizeOf(context).width * 0.15),
@@ -382,36 +333,24 @@ class _AppRouterScreenState extends State<AppRouterScreen> {
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: theme.colorScheme.surface.withOpacity(0.5),
-                border: Border.all(
-                  color: theme.colorScheme.primary.withOpacity(0.8),
-                )),
+              borderRadius: BorderRadius.circular(100),
+              color: theme.colorScheme.surface.withOpacity(0.5),
+              border:
+                  Border.all(color: theme.colorScheme.primary.withOpacity(0.8)),
+            ),
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              mainAxisSize: MainAxisSize.min,
-              children: List.generate(3, (index) {
-                final isSelected = widget.navigationShell.currentIndex == index;
+              children: navItems.asMap().entries.map((entry) {
+                final index = entry.key;
+                final item = entry.value;
+                final isSelected = navigationShell.currentIndex == index;
                 return Expanded(
                   child: InkWell(
-                    onTap: () => widget.navigationShell.goBranch(index),
+                    onTap: () => navigationShell.goBranch(index),
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: index == 0
-                              ? Radius.circular(100)
-                              : Radius.circular(5),
-                          topRight: index == 2
-                              ? Radius.circular(100)
-                              : Radius.circular(5),
-                          bottomLeft: index == 0
-                              ? Radius.circular(100)
-                              : Radius.circular(5),
-                          bottomRight: index == 2
-                              ? Radius.circular(100)
-                              : Radius.circular(5),
-                        ),
+                        borderRadius: BorderRadius.circular(100),
                         color: isSelected
                             ? theme.colorScheme.primary.withOpacity(0.2)
                             : null,
@@ -419,7 +358,7 @@ class _AppRouterScreenState extends State<AppRouterScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Center(
                         child: Icon(
-                          _getIconForIndex(index),
+                          item.icon,
                           color: isSelected
                               ? theme.colorScheme.primary
                               : theme.colorScheme.onSurface,
@@ -428,56 +367,40 @@ class _AppRouterScreenState extends State<AppRouterScreen> {
                     ),
                   ),
                 );
-              }),
+              }).toList(),
             ),
           ),
         ),
       ),
     );
   }
-
-  IconData _getIconForIndex(int index) {
-    switch (index) {
-      case 0:
-        return Iconsax.home;
-      case 1:
-        return Iconsax.discover_1;
-      case 2:
-        return Iconsax.bookmark;
-      default:
-        return Iconsax.home;
-    }
-  }
 }
 
+// Exit confirmation dialog
 void showExitConfirmationDialog(BuildContext context,
     {bool isSystemExit = false}) {
   showDialog(
     context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text("Confirm Exit"),
-        content: const Text("Are you sure you want to exit the app?"),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-            child: const Text("Cancel"),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-              if (isSystemExit) {
-                SystemNavigator.pop();
-              } else {
-                context.pop();
-              }
-            },
-            child: const Text("Exit"),
-          ),
-        ],
-      );
-    },
+    builder: (context) => AlertDialog(
+      title: const Text('Confirm Exit'),
+      content: const Text('Are you sure you want to exit the app?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            if (isSystemExit) {
+              SystemNavigator.pop();
+            } else {
+              context.pop();
+            }
+          },
+          child: const Text('Exit'),
+        ),
+      ],
+    ),
   );
 }

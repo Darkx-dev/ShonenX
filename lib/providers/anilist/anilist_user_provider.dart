@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shonenx/api/anilist/services/anilist_service.dart';
-import 'package:shonenx/api/models/anilist/anilist_user.dart';
+import 'package:shonenx/core/anilist/services/anilist_service.dart';
+import 'package:shonenx/core/models/anilist/anilist_user.dart';
 
 final userProvider = StateNotifierProvider<UserNotifier, User?>((ref) {
   return UserNotifier();

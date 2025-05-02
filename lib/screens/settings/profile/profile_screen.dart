@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shonenx/api/anilist/services/auth_service.dart';
+import 'package:shonenx/core/anilist/services/auth_service.dart';
 import 'package:shonenx/providers/anilist/anilist_user_provider.dart';
 import 'package:shonenx/widgets/ui/shonenx_settings.dart';
 

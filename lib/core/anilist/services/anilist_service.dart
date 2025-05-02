@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:shonenx/api/anilist/graphql_client.dart';
-import 'package:shonenx/api/anilist/queries.dart';
-import 'package:shonenx/api/models/anilist/anilist_media_list.dart';
-import 'package:shonenx/api/models/anilist/anilist_favorites.dart';
+import 'package:shonenx/core/anilist/graphql_client.dart';
+import 'package:shonenx/core/anilist/queries.dart';
+import 'package:shonenx/core/models/anilist/anilist_media_list.dart';
+import 'package:shonenx/core/models/anilist/anilist_favorites.dart';
 
 class AnilistService {
   /// **Generic method to execute GraphQL queries**

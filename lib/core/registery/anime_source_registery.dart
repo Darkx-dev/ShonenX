@@ -1,5 +1,5 @@
 import 'dart:developer' as dev;
-import 'package:shonenx/api/sources/anime/anime_provider.dart';
+import 'package:shonenx/core/sources/anime/anime_provider.dart';
 
 /// Enum representing the initialization status of the registry
 enum RegistryStatus { uninitialized, initializing, initialized, error }

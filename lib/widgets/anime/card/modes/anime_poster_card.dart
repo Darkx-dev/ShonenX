@@ -1,7 +1,7 @@
 // Modernized Poster Mode
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:shonenx/api/models/anilist/anilist_media_list.dart';
+import 'package:shonenx/core/models/anilist/anilist_media_list.dart';
 import 'package:shonenx/widgets/anime/card/anime_card_components.dart';
 import 'package:shonenx/widgets/anime/card/anime_card_image.dart';
 
