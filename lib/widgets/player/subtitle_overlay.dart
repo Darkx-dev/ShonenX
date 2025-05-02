@@ -18,7 +18,7 @@ class SubtitleOverlay extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: subtitleStyle.backgroundOpacity),
+        color: Colors.black.withOpacity(subtitleStyle.backgroundOpacity),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
@@ -30,7 +30,7 @@ class SubtitleOverlay extends StatelessWidget {
           shadows: [
             if (subtitleStyle.hasShadow)
               Shadow(
-                color: Colors.black.withValues(alpha: 0.8),
+                color: Colors.black.withOpacity(0.8),
                 offset: const Offset(0.5, 0.5),
                 blurRadius: 2,
               ),

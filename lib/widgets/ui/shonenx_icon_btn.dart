@@ -55,18 +55,18 @@ class ShonenXIconButton extends StatelessWidget {
     final activeBackgroundColor = backgroundColor ??
         (useMaterial3
             ? colorScheme.primaryContainer
-            : colorScheme.primary.withValues(alpha: 0.12));
+            : colorScheme.primary.withOpacity(0.12));
 
     final activeForegroundColor = foregroundColor ??
         (useMaterial3 ? colorScheme.onPrimaryContainer : colorScheme.primary);
 
     // Calculate alpha values for disabled state
     final disabledBackgroundColor = showDisabledOverlay
-        ? activeBackgroundColor.withValues(alpha: disabledAlpha)
+        ? activeBackgroundColor.withOpacity(disabledAlpha)
         : activeBackgroundColor;
 
     final disabledForegroundColor = showDisabledOverlay
-        ? activeForegroundColor.withValues(alpha: disabledAlpha)
+        ? activeForegroundColor.withOpacity(disabledAlpha)
         : activeForegroundColor;
 
     // Default label style if not provided

@@ -69,7 +69,7 @@ class ContinueWatchingCard extends ConsumerWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: colorScheme.shadow.withValues(alpha: 0.08),
+                color: colorScheme.shadow.withOpacity(0.08),
                 blurRadius: 6,
                 offset: const Offset(0, 2),
               ),
@@ -107,7 +107,7 @@ class ContinueWatchingCard extends ConsumerWidget {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          colorScheme.scrim.withValues(alpha: 0.7),
+                          colorScheme.scrim.withOpacity(0.7),
                         ],
                         stops: const [0.6, 1.0],
                       ),
@@ -157,7 +157,7 @@ class ContinueWatchingCard extends ConsumerWidget {
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.roboto(
                           fontSize: 12,
-                          color: Colors.white.withValues(alpha: 0.8),
+                          color: Colors.white.withOpacity(0.8),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -177,7 +177,7 @@ class ContinueWatchingCard extends ConsumerWidget {
                             remainingTime,
                             style: GoogleFonts.roboto(
                               fontSize: 12,
-                              color: Colors.white.withValues(alpha: 0.8),
+                              color: Colors.white.withOpacity(0.8),
                             ),
                           ),
                           const Spacer(),
@@ -213,7 +213,7 @@ class ContinueWatchingCard extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(4),
                         child: LinearProgressIndicator(
                           value: progress,
-                          backgroundColor: Colors.white.withValues(alpha: 0.2),
+                          backgroundColor: Colors.white.withOpacity(0.2),
                           valueColor:
                               AlwaysStoppedAnimation(colorScheme.primary),
                           minHeight: 3,
@@ -229,7 +229,7 @@ class ContinueWatchingCard extends ConsumerWidget {
                     duration: const Duration(milliseconds: 200),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? colorScheme.primary.withValues(alpha: 0.3)
+                          ? colorScheme.primary.withOpacity(0.3)
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -290,10 +290,10 @@ class _Tag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.9),
+        color: color.withOpacity(0.9),
         borderRadius: BorderRadius.circular(6),
         border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
+          color: theme.colorScheme.outlineVariant.withOpacity(0.2),
         ),
       ),
       child: Text(
@@ -322,7 +322,7 @@ class _IconButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.9),
+          color: theme.colorScheme.primaryContainer.withOpacity(0.9),
           shape: BoxShape.circle,
         ),
         child: Icon(
@@ -362,7 +362,7 @@ class _ImageFallback extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: colorScheme.surfaceContainerLow.withValues(alpha: 0.5),
+      color: colorScheme.surfaceContainerLow.withOpacity(0.5),
       child: Center(
         child: Icon(
           Iconsax.gallery_slash,

@@ -11,7 +11,7 @@ class NeonCard extends StatelessWidget {
   final bool isHovered;
 
   const NeonCard(
-      {required this.anime, required this.tag, required this.isHovered});
+      {super.key, required this.anime, required this.tag, required this.isHovered});
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +24,13 @@ class NeonCard extends StatelessWidget {
         border: Border.all(
           color: isHovered
               ? theme.colorScheme.primary
-              : theme.colorScheme.onSurface.withValues(alpha: 0.3),
+              : theme.colorScheme.onSurface.withOpacity(0.3),
           width: isHovered ? 2.5 : 1.5,
         ),
         boxShadow: [
           if (isHovered)
             BoxShadow(
-              color: theme.colorScheme.primary.withValues(alpha: 0.5),
+              color: theme.colorScheme.primary.withOpacity(0.5),
               blurRadius: 10,
               spreadRadius: 1,
             ),
@@ -50,7 +50,7 @@ class NeonCard extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    theme.shadowColor.withValues(alpha: 0.8),
+                    theme.shadowColor.withOpacity(0.8),
                   ],
                   stops: const [0.5, 1.0],
                 ),

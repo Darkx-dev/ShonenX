@@ -129,7 +129,7 @@ class ProfileSettingsScreen extends ConsumerWidget {
 
     return Card(
       elevation: 4,
-      shadowColor: theme.colorScheme.shadow.withValues(alpha: 0.1),
+      shadowColor: theme.colorScheme.shadow.withOpacity(0.1),
       shape: RoundedRectangleBorder(
         borderRadius:
             (theme.cardTheme.shape as RoundedRectangleBorder?)?.borderRadius ??
@@ -145,7 +145,7 @@ class ProfileSettingsScreen extends ConsumerWidget {
           gradient: LinearGradient(
             colors: [
               theme.colorScheme.surface,
-              theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+              theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -175,14 +175,14 @@ class ProfileSettingsScreen extends ConsumerWidget {
                                   width: 48,
                                   height: 48,
                                   color: theme.colorScheme.primary
-                                      .withValues(alpha: 0.1),
+                                      .withOpacity(0.1),
                                 ),
                               )
                             : Container(
                                 width: 48,
                                 height: 48,
                                 color: theme.colorScheme.primary
-                                    .withValues(alpha: 0.1),
+                                    .withOpacity(0.1),
                                 child: Icon(
                                   Iconsax.user,
                                   color: theme.colorScheme.primary,
@@ -236,7 +236,7 @@ class ProfileSettingsScreen extends ConsumerWidget {
                     icon: const Icon(Iconsax.logout),
                     style: IconButton.styleFrom(
                       backgroundColor:
-                          theme.colorScheme.error.withValues(alpha: 0.1),
+                          theme.colorScheme.error.withOpacity(0.1),
                       foregroundColor: theme.colorScheme.error,
                       padding: const EdgeInsets.all(10),
                     ),
@@ -250,8 +250,8 @@ class ProfileSettingsScreen extends ConsumerWidget {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          theme.colorScheme.primary.withValues(alpha: 0.2),
-                          theme.colorScheme.primary.withValues(alpha: 0.1),
+                          theme.colorScheme.primary.withOpacity(0.2),
+                          theme.colorScheme.primary.withOpacity(0.1),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -283,7 +283,7 @@ class ProfileSettingsScreen extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 14,
                             color: theme.colorScheme.onSurface
-                                .withValues(alpha: 0.7),
+                                .withOpacity(0.7),
                           ),
                         ),
                       ],
@@ -294,7 +294,7 @@ class ProfileSettingsScreen extends ConsumerWidget {
                     icon: const Icon(Iconsax.login),
                     style: IconButton.styleFrom(
                       backgroundColor:
-                          theme.colorScheme.primary.withValues(alpha: 0.1),
+                          theme.colorScheme.primary.withOpacity(0.1),
                       foregroundColor: theme.colorScheme.primary,
                       padding: const EdgeInsets.all(10),
                     ),

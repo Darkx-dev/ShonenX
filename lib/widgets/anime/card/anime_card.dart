@@ -54,7 +54,7 @@ class _AnimatedAnimeCardState extends State<AnimatedAnimeCard> {
                 color: Theme.of(context)
                     .colorScheme
                     .shadow
-                    .withValues(alpha: _isHovered ? 0.25 : 0.1),
+                    .withOpacity(_isHovered ? 0.25 : 0.1),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),

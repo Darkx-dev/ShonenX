@@ -29,9 +29,9 @@ class CinematicCard extends StatelessWidget {
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [
-                  theme.shadowColor.withValues(alpha: 0.8),
+                  theme.shadowColor.withOpacity(0.8),
                   Colors.transparent,
-                  theme.shadowColor.withValues(alpha: 0.8),
+                  theme.shadowColor.withOpacity(0.8),
                 ],
                 stops: const [0.0, 0.5, 1.0],
               ),

@@ -10,7 +10,7 @@ class ShimmerPlaceholder extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       height: height,
-      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
       child: Center(
         child: CircularProgressIndicator(
           strokeWidth: 2,

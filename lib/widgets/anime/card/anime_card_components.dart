@@ -9,7 +9,7 @@ class Tag extends StatelessWidget {
   final IconData? icon;
   final bool hasShadow;
 
-  const Tag({
+  const Tag({super.key, 
     required this.text,
     required this.color,
     required this.textColor,
@@ -28,7 +28,7 @@ class Tag extends StatelessWidget {
         boxShadow: hasShadow
             ? [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.3),
+                  color: Colors.black.withOpacity(0.3),
                   blurRadius: 4,
                   offset: const Offset(0, 1),
                 ),
@@ -63,7 +63,7 @@ class AnimeTitle extends StatelessWidget {
   final bool minimal;
   final bool enhanced;
 
-  const AnimeTitle({
+  const AnimeTitle({super.key, 
     required this.anime,
     required this.maxLines,
     this.minimal = false,
@@ -101,7 +101,7 @@ class AnimeTitle extends StatelessWidget {
           color: Colors.white,
           shadows: [
             Shadow(
-              color: Colors.black.withValues(alpha: 0.7),
+              color: Colors.black.withOpacity(0.7),
               offset: const Offset(0, 1),
               blurRadius: 3,
             ),
@@ -120,7 +120,7 @@ class AnimeTitle extends StatelessWidget {
         color: Colors.white,
         shadows: [
           Shadow(
-            color: Colors.black.withValues(alpha: 0.5),
+            color: Colors.black.withOpacity(0.5),
             offset: const Offset(0, 1),
             blurRadius: 2,
           ),

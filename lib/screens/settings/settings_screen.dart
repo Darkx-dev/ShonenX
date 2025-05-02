@@ -21,7 +21,7 @@ class SettingsScreen extends StatelessWidget {
           icon: Icon(Iconsax.arrow_left_2, color: colorScheme.onSurface),
           style: IconButton.styleFrom(
             backgroundColor:
-                colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                colorScheme.surfaceContainerHighest.withOpacity(0.5),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             padding: const EdgeInsets.all(10),

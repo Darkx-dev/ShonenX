@@ -32,7 +32,7 @@ class AnimeSpotlightCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.shadow.withValues(alpha: 0.2),
+              color: theme.colorScheme.shadow.withOpacity(0.2),
               blurRadius: 12,
               offset: const Offset(0, 6),
             ),
@@ -81,7 +81,7 @@ class _Skeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Container(
-      color: colorScheme.surfaceContainer.withValues(alpha: 0.3),
+      color: colorScheme.surfaceContainer.withOpacity(0.3),
       padding: const EdgeInsets.all(12),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -147,7 +147,7 @@ class _SkeletonBar extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: colorScheme.onSurface.withValues(alpha: 0.2),
+        color: colorScheme.onSurface.withOpacity(0.2),
         borderRadius: BorderRadius.circular(12),
       ),
     );
@@ -193,8 +193,8 @@ class _AnimeContent extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 Colors.transparent,
-                colorScheme.shadow.withValues(alpha: 0.3),
-                colorScheme.shadow.withValues(alpha: 0.7),
+                colorScheme.shadow.withOpacity(0.3),
+                colorScheme.shadow.withOpacity(0.7),
               ],
               stops: const [0.5, 0.8, 1.0],
             ),
@@ -245,7 +245,7 @@ class _ScoreIndicator extends StatelessWidget {
       height: isSmallScreen ? 40 : 48,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: colorScheme.surface.withValues(alpha: 0.9),
+        color: colorScheme.surface.withOpacity(0.9),
       ),
       child: Stack(
         alignment: Alignment.center,
@@ -288,7 +288,7 @@ class _TopDetails extends StatelessWidget {
         if (anime.format != null)
           _InfoTag(
             text: anime.format!.split('.').last,
-            color: colorScheme.tertiaryContainer.withValues(alpha: 0.8),
+            color: colorScheme.tertiaryContainer.withOpacity(0.8),
             textColor: colorScheme.onTertiaryContainer,
             isGlass: true,
             isSmallScreen: MediaQuery.of(context).size.width < 600,
@@ -339,7 +339,7 @@ class _BottomDetails extends StatelessWidget {
               color: Colors.white,
               shadows: [
                 Shadow(
-                  color: colorScheme.shadow.withValues(alpha: 0.5),
+                  color: colorScheme.shadow.withOpacity(0.5),
                   offset: const Offset(0, 2),
                   blurRadius: 4,
                 ),
@@ -354,7 +354,7 @@ class _BottomDetails extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.montserrat(
                 fontSize: 14,
-                color: Colors.white.withValues(alpha: 0.9),
+                color: Colors.white.withOpacity(0.9),
                 height: 1.2,
               ),
             ),
@@ -367,7 +367,7 @@ class _BottomDetails extends StatelessWidget {
                 _InfoTag(
                   icon: Iconsax.video_play,
                   text: '${anime.episodes} eps',
-                  color: colorScheme.surface.withValues(alpha: 0.7),
+                  color: colorScheme.surface.withOpacity(0.7),
                   textColor: colorScheme.onSurface,
                   isSmallScreen: isSmallScreen,
                 ),
@@ -375,7 +375,7 @@ class _BottomDetails extends StatelessWidget {
                 _InfoTag(
                   icon: Iconsax.timer_1,
                   text: '${anime.duration}m',
-                  color: colorScheme.surface.withValues(alpha: 0.7),
+                  color: colorScheme.surface.withOpacity(0.7),
                   textColor: colorScheme.onSurface,
                   isSmallScreen: isSmallScreen,
                 ),
@@ -383,7 +383,7 @@ class _BottomDetails extends StatelessWidget {
                 _InfoTag(
                   icon: Iconsax.timer,
                   text: anime.status!.split('.').last,
-                  color: statusColor.withValues(alpha: 0.9),
+                  color: statusColor.withOpacity(0.9),
                   textColor: Colors.white,
                   isSmallScreen: isSmallScreen,
                 ),
@@ -423,7 +423,7 @@ class _InfoTag extends StatelessWidget {
         color: color,
         borderRadius: BorderRadius.circular(16),
         border: isGlass
-            ? Border.all(color: Colors.white.withValues(alpha: 0.2))
+            ? Border.all(color: Colors.white.withOpacity(0.2))
             : null,
       ),
       child: Row(
@@ -458,7 +458,7 @@ class _ImagePlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Container(
-      color: colorScheme.surfaceContainer.withValues(alpha: 0.3),
+      color: colorScheme.surfaceContainer.withOpacity(0.3),
       child: Center(
         child: CircularProgressIndicator(
           strokeWidth: 2,
@@ -476,7 +476,7 @@ class _ImageError extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Container(
-      color: colorScheme.errorContainer.withValues(alpha: 0.6),
+      color: colorScheme.errorContainer.withOpacity(0.6),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

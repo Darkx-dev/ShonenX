@@ -5,10 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:shonenx/api/models/anilist/anilist_media_list.dart'
     as anilist_media;
-import 'package:shonenx/data/hive/boxes/settings_box.dart';
 import 'package:shonenx/helpers/ui.dart';
 import 'package:shonenx/providers/watch_providers.dart';
-import 'package:shonenx/screens/settings/player/player_screen.dart';
 import 'package:shonenx/screens/watch_screen/components/loading_overlay.dart';
 import 'package:shonenx/screens/watch_screen/components/video_player_view.dart';
 import 'package:shonenx/screens/watch_screen/episodes_panel.dart';

@@ -31,11 +31,11 @@ class CenterControls extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
           decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer.withValues(alpha: 0.9),
+            color: theme.colorScheme.primaryContainer.withOpacity(0.9),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: theme.colorScheme.shadow.withValues(alpha: 0.3),
+                color: theme.colorScheme.shadow.withOpacity(0.3),
                 blurRadius: 10,
                 spreadRadius: 2,
               ),
@@ -46,7 +46,7 @@ class CenterControls extends StatelessWidget {
             child: InkWell(
               onTap: onTap,
               customBorder: const CircleBorder(),
-              splashColor: theme.colorScheme.primary.withValues(alpha: 0.3),
+              splashColor: theme.colorScheme.primary.withOpacity(0.3),
               child: Padding(
                 padding: EdgeInsets.all(padding.clamp(8, 16)),
                 child: SizedBox(

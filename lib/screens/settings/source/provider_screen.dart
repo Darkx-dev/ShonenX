@@ -506,7 +506,7 @@ class _ProviderSettingsScreenState
             ),
             filled: true,
             fillColor:
-                colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                colorScheme.surfaceContainerHighest.withOpacity(0.3),
             prefixIcon: const Icon(Iconsax.link),
             suffixIcon: apiStatus.isChecking
                 ? const Padding(
@@ -561,7 +561,7 @@ class _ProviderSettingsScreenState
         borderRadius: BorderRadius.circular(16),
         elevation: isSelected ? 4 : 1,
         color: isSelected
-            ? colorScheme.primaryContainer.withValues(alpha: 0.3)
+            ? colorScheme.primaryContainer.withOpacity(0.3)
             : colorScheme.surface,
         child: InkWell(
           onTap: () {
@@ -577,7 +577,7 @@ class _ProviderSettingsScreenState
               border: Border.all(
                 color: isSelected
                     ? colorScheme.primary
-                    : colorScheme.outlineVariant.withValues(alpha: 0.5),
+                    : colorScheme.outlineVariant.withOpacity(0.5),
                 width: isSelected ? 2 : 1,
               ),
             ),
@@ -595,7 +595,7 @@ class _ProviderSettingsScreenState
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: colorScheme.primary.withValues(alpha: 0.3),
+                              color: colorScheme.primary.withOpacity(0.3),
                               blurRadius: 8,
                               spreadRadius: 1,
                             )
@@ -663,7 +663,7 @@ class _ProviderSettingsScreenState
                   height: 32,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: statusColor.withValues(alpha: 0.1),
+                    color: statusColor.withOpacity(0.1),
                   ),
                   child: Icon(
                     _getStatusIcon(status.status),
@@ -699,6 +699,6 @@ class _ProviderSettingsScreenState
         'online' => Colors.green,
         'issues' => Colors.orange,
         'offline' => Colors.red,
-        _ => colors.onSurface.withValues(alpha: 0.5),
+        _ => colors.onSurface.withOpacity(0.5),
       };
 }

@@ -39,7 +39,7 @@ class AppInitializer {
 
   static Future<void> _initializeHive() async {
     final appDocDir = await getApplicationDocumentsDirectory();
-    final customPath = '${appDocDir.path}${Platform.pathSeparator}hive_data';
+    final customPath = '${appDocDir.path}${Platform.pathSeparator}shonenx';
 
     await Hive.initFlutter(customPath);
     log("✅ Hive initialized at: $customPath", name: "appInitializer");

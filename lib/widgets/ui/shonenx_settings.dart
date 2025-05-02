@@ -60,7 +60,7 @@ class SettingsSection extends StatelessWidget {
                     Icon(
                       Iconsax.arrow_right_3,
                       size: 16,
-                      color: theme.colorScheme.primary.withValues(alpha: 0.5),
+                      color: theme.colorScheme.primary.withOpacity(0.5),
                     )
                   ]
                 ],
@@ -69,7 +69,7 @@ class SettingsSection extends StatelessWidget {
           ),
           Card(
             elevation: 1,
-            shadowColor: theme.colorScheme.shadow.withValues(alpha: 0.1),
+            shadowColor: theme.colorScheme.shadow.withOpacity(0.1),
             shape: RoundedRectangleBorder(
               borderRadius: (theme.cardTheme.shape as RoundedRectangleBorder?)
                       ?.borderRadius ??
@@ -91,7 +91,7 @@ class SettingsSection extends StatelessWidget {
                           indent: 60,
                           endIndent: 16,
                           color: theme.colorScheme.onSurface
-                              .withValues(alpha: 0.1),
+                              .withOpacity(0.1),
                         ),
                       item,
                     ],
@@ -190,7 +190,7 @@ class _SettingsItemState extends State<SettingsItem>
                 decoration: BoxDecoration(
                   color: _isHovered && !widget.disabled
                       ? theme.colorScheme.surfaceContainerHighest
-                          .withValues(alpha: 0.3)
+                          .withOpacity(0.3)
                       : Colors.transparent,
                   borderRadius:
                       (theme.cardTheme.shape as RoundedRectangleBorder?)
@@ -225,9 +225,9 @@ class _SettingsItemState extends State<SettingsItem>
                             size: widget.compact ? 18 : 20,
                             color: widget.disabled
                                 ? theme.colorScheme.onSurface
-                                    .withValues(alpha: 0.2)
+                                    .withOpacity(0.2)
                                 : theme.colorScheme.onSurface
-                                    .withValues(alpha: 0.5),
+                                    .withOpacity(0.5),
                           )
                   ],
                 ),
@@ -330,7 +330,7 @@ class _SettingsItemDropdownState<T> extends State<SettingsItemDropdown<T>>
                 decoration: BoxDecoration(
                   color: _isHovered && !widget.disabled
                       ? theme.colorScheme.surfaceContainerHighest
-                          .withValues(alpha: 0.3)
+                          .withOpacity(0.3)
                       : Colors.transparent,
                   borderRadius:
                       (theme.cardTheme.shape as RoundedRectangleBorder?)
@@ -361,9 +361,9 @@ class _SettingsItemDropdownState<T> extends State<SettingsItemDropdown<T>>
                       decoration: BoxDecoration(
                         color: widget.disabled
                             ? theme.colorScheme.surfaceContainerHighest
-                                .withValues(alpha: 0.1)
+                                .withOpacity(0.1)
                             : theme.colorScheme.surfaceContainerHighest
-                                .withValues(alpha: 0.3),
+                                .withOpacity(0.3),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Row(
@@ -376,7 +376,7 @@ class _SettingsItemDropdownState<T> extends State<SettingsItemDropdown<T>>
                               fontWeight: FontWeight.w500,
                               color: widget.disabled
                                   ? theme.colorScheme.onSurface
-                                      .withValues(alpha: 0.4)
+                                      .withOpacity(0.4)
                                   : theme.colorScheme.onSurface,
                             ),
                           ),
@@ -386,9 +386,9 @@ class _SettingsItemDropdownState<T> extends State<SettingsItemDropdown<T>>
                             size: 16,
                             color: widget.disabled
                                 ? theme.colorScheme.onSurface
-                                    .withValues(alpha: 0.2)
+                                    .withOpacity(0.2)
                                 : theme.colorScheme.onSurface
-                                    .withValues(alpha: 0.5),
+                                    .withOpacity(0.5),
                           ),
                         ],
                       ),
@@ -426,7 +426,7 @@ class _SettingsItemDropdownState<T> extends State<SettingsItemDropdown<T>>
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
+                  color: theme.colorScheme.onSurface.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -443,7 +443,7 @@ class _SettingsItemDropdownState<T> extends State<SettingsItemDropdown<T>>
               ),
               Divider(
                   height: 1,
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+                  color: theme.colorScheme.outline.withOpacity(0.2)),
               ConstrainedBox(
                 constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.6,
@@ -466,7 +466,7 @@ class _SettingsItemDropdownState<T> extends State<SettingsItemDropdown<T>>
                         ),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? theme.colorScheme.primary.withValues(alpha: 0.1)
+                              ? theme.colorScheme.primary.withOpacity(0.1)
                               : Colors.transparent,
                         ),
                         child: Row(
@@ -666,8 +666,8 @@ class _SettingsSliderState extends State<SettingsSlider> {
               decoration: BoxDecoration(
                 color: widget.disabled
                     ? theme.colorScheme.surfaceContainerHighest
-                        .withValues(alpha: 0.1)
-                    : theme.colorScheme.primary.withValues(alpha: 0.1),
+                        .withOpacity(0.1)
+                    : theme.colorScheme.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Text(
@@ -676,7 +676,7 @@ class _SettingsSliderState extends State<SettingsSlider> {
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: widget.disabled
-                      ? theme.colorScheme.onSurface.withValues(alpha: 0.4)
+                      ? theme.colorScheme.onSurface.withOpacity(0.4)
                       : theme.colorScheme.primary,
                 ),
               ),
@@ -758,8 +758,8 @@ Widget _buildIconContainer(BuildContext context, IconData icon, bool disabled,
     decoration: BoxDecoration(
       gradient: LinearGradient(
         colors: [
-          baseColor.withValues(alpha: disabled ? 0.1 : 0.2),
-          baseColor.withValues(alpha: disabled ? 0.05 : 0.1),
+          baseColor.withOpacity(disabled ? 0.1 : 0.2),
+          baseColor.withOpacity(disabled ? 0.05 : 0.1),
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -769,7 +769,7 @@ Widget _buildIconContainer(BuildContext context, IconData icon, bool disabled,
           ? null
           : [
               BoxShadow(
-                color: baseColor.withValues(alpha: 0.1),
+                color: baseColor.withOpacity(0.1),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -779,7 +779,7 @@ Widget _buildIconContainer(BuildContext context, IconData icon, bool disabled,
       icon,
       size: compact ? 18 : 22,
       color: disabled
-          ? theme.colorScheme.onSurface.withValues(alpha: 0.4)
+          ? theme.colorScheme.onSurface.withOpacity(0.4)
           : baseColor,
     ),
   );
@@ -799,7 +799,7 @@ Widget _buildItemContent(
           fontSize: compact ? 14 : 16,
           fontWeight: FontWeight.w600,
           color: disabled
-              ? theme.colorScheme.onSurface.withValues(alpha: 0.4)
+              ? theme.colorScheme.onSurface.withOpacity(0.4)
               : theme.colorScheme.onSurface,
         ),
       ),
@@ -809,8 +809,8 @@ Widget _buildItemContent(
         style: TextStyle(
           fontSize: compact ? 12 : 14,
           color: disabled
-              ? theme.colorScheme.onSurface.withValues(alpha: 0.4)
-              : theme.colorScheme.onSurface.withValues(alpha: 0.7),
+              ? theme.colorScheme.onSurface.withOpacity(0.4)
+              : theme.colorScheme.onSurface.withOpacity(0.7),
         ),
       ),
     ],
@@ -844,8 +844,8 @@ class SettingsHeader extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            color.withValues(alpha: 0.15),
-            color.withValues(alpha: 0.05),
+            color.withOpacity(0.15),
+            color.withOpacity(0.05),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -857,7 +857,7 @@ class SettingsHeader extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
+              color: color.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -885,7 +885,7 @@ class SettingsHeader extends StatelessWidget {
                     subtitle!,
                     style: TextStyle(
                       fontSize: 14,
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                      color: theme.colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
                 ],

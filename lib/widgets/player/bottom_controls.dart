@@ -136,7 +136,7 @@ class _SettingsButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: 0.38),
+          color: Colors.black.withOpacity(0.38),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Colors.white24),
         ),

@@ -33,7 +33,7 @@ class CompactCard extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  theme.shadowColor.withValues(alpha: 0.85),
+                  theme.shadowColor.withOpacity(0.85),
                 ],
                 stops: const [0.65, 1.0],
               ),
@@ -54,7 +54,7 @@ class CompactCard extends StatelessWidget {
                     children: [
                       Tag(
                         text: '${anime!.averageScore}',
-                        color: theme.colorScheme.primary.withValues(alpha: 0.9),
+                        color: theme.colorScheme.primary.withOpacity(0.9),
                         textColor: theme.colorScheme.onPrimary,
                         icon: Iconsax.star1,
                         hasShadow: true,
@@ -84,7 +84,7 @@ class CompactCard extends StatelessWidget {
                           Text(
                             anime!.format!.split('.').last,
                             style: theme.textTheme.labelSmall?.copyWith(
-                              color: Colors.white.withValues(alpha: 0.9),
+                              color: Colors.white.withOpacity(0.9),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -95,7 +95,7 @@ class CompactCard extends StatelessWidget {
                             child: Text(
                               '•',
                               style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.7),
+                                color: Colors.white.withOpacity(0.7),
                               ),
                             ),
                           ),
@@ -105,7 +105,7 @@ class CompactCard extends StatelessWidget {
                           Text(
                             '${anime!.episodes} ep',
                             style: theme.textTheme.labelSmall?.copyWith(
-                              color: Colors.white.withValues(alpha: 0.9),
+                              color: Colors.white.withOpacity(0.9),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -122,7 +122,7 @@ class CompactCard extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                  color: theme.colorScheme.primary.withOpacity(0.6),
                   width: 2,
                 ),
                 borderRadius: BorderRadius.circular(14),

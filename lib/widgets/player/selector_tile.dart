@@ -30,8 +30,8 @@ class SelectorTile extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(12),
-          splashColor: colorScheme.primary.withValues(alpha: 0.1),
-          highlightColor: colorScheme.primary.withValues(alpha: 0.05),
+          splashColor: colorScheme.primary.withOpacity(0.1),
+          highlightColor: colorScheme.primary.withOpacity(0.05),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
@@ -69,7 +69,7 @@ class SelectorTile extends StatelessWidget {
                             subtitle!,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: selected
-                                  ? colorScheme.primary.withValues(alpha: 0.8)
+                                  ? colorScheme.primary.withOpacity(0.8)
                                   : colorScheme.onSurfaceVariant,
                             ),
                           ),

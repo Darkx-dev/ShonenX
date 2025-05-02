@@ -36,8 +36,8 @@ class DefaultCard extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  theme.shadowColor.withValues(alpha: 0.5), // Lighter middle
-                  theme.shadowColor.withValues(alpha: 0.9), // Darker bottom
+                  theme.shadowColor.withOpacity(0.5), // Lighter middle
+                  theme.shadowColor.withOpacity(0.9), // Darker bottom
                 ],
                 stops: const [
                   0.4,
@@ -63,7 +63,7 @@ class DefaultCard extends StatelessWidget {
                       Tag(
                         text: anime!.format!.split('.').last,
                         color: theme.colorScheme.tertiaryContainer
-                            .withValues(alpha: 0.85),
+                            .withOpacity(0.85),
                         textColor: theme.colorScheme.onTertiaryContainer,
                         hasShadow: true,
                       ),
@@ -99,6 +99,7 @@ class DefaultCard extends StatelessWidget {
 
                     // Episode info with enhanced styling
                     _EpisodesInfo(
+                      compact: false,
                       anime: anime,
                       enhanced: true, // New property for enhanced styling
                     ),
@@ -113,7 +114,7 @@ class DefaultCard extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.5),
+                  color: theme.colorScheme.primary.withOpacity(0.5),
                   width: 2,
                 ),
                 borderRadius: (theme.cardTheme.shape as RoundedRectangleBorder?)
@@ -135,8 +136,7 @@ class _EpisodesInfo extends StatelessWidget {
 
   const _EpisodesInfo({
     required this.anime,
-    this.compact = false,
-    this.enhanced = false,
+    this.enhanced = false, required this.compact,
   });
 
   @override
@@ -150,13 +150,13 @@ class _EpisodesInfo extends StatelessWidget {
           Icon(
             Iconsax.play_circle,
             size: 14,
-            color: Colors.white.withValues(alpha: 0.9),
+            color: Colors.white.withOpacity(0.9),
           ),
           const SizedBox(width: 4),
           Text(
             compact ? '${anime!.episodes}ep' : '${anime!.episodes} episodes',
             style: theme.textTheme.labelSmall?.copyWith(
-              color: Colors.white.withValues(alpha: 0.9),
+              color: Colors.white.withOpacity(0.9),
               fontWeight: FontWeight.w500,
               letterSpacing: 0.2,
             ),

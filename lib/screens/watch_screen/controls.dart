@@ -241,7 +241,7 @@ class _CustomControlsState extends ConsumerState<CustomControls> {
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.black.withValues(alpha: 0.7), Colors.transparent],
+              colors: [Colors.black.withOpacity(0.7), Colors.transparent],
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
             ),
@@ -313,7 +313,7 @@ class _CustomControlsState extends ConsumerState<CustomControls> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color:
-                theme.colorScheme.surfaceContainerLowest.withValues(alpha: 0.3),
+                theme.colorScheme.surfaceContainerLowest.withOpacity(0.3),
           ),
           child: Column(
             children: [
@@ -466,7 +466,7 @@ class _CustomControlsState extends ConsumerState<CustomControls> {
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Colors.black.withOpacity(0.2),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),

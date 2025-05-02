@@ -140,7 +140,7 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
                     onPressed: _showSortDialog,
                     style: IconButton.styleFrom(
                       backgroundColor: colorScheme.surfaceContainerHighest
-                          .withValues(alpha: 0.2),
+                          .withOpacity(0.2),
                       padding: const EdgeInsets.all(10),
                     ),
                   ),
@@ -151,7 +151,7 @@ class _BrowseScreenState extends ConsumerState<BrowseScreen> {
                     onPressed: _showFilterDialog,
                     style: IconButton.styleFrom(
                       backgroundColor: colorScheme.surfaceContainerHighest
-                          .withValues(alpha: 0.2),
+                          .withOpacity(0.2),
                       padding: const EdgeInsets.all(10),
                     ),
                   ),

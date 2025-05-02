@@ -142,7 +142,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
               onChanged: (value) => notifier.updateThemeSettings(
                   settings.copyWith(themeMode: value ? 'dark' : 'light')),
               activeColor: colorScheme.primary,
-              activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+              activeTrackColor: colorScheme.primary.withOpacity(0.5),
             ),
             onTap: () {},
           ),
@@ -156,7 +156,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
                 onChanged: (value) => notifier
                     .updateThemeSettings(settings.copyWith(amoled: value)),
                 activeColor: colorScheme.primary,
-                activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+                activeTrackColor: colorScheme.primary.withOpacity(0.5),
               ),
               onTap: () {},
             ),
@@ -174,7 +174,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
               onChanged: (value) => notifier
                   .updateThemeSettings(settings.copyWith(useMaterial3: value)),
               activeColor: colorScheme.primary,
-              activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+              activeTrackColor: colorScheme.primary.withOpacity(0.5),
             ),
             onTap: () {},
           ),
@@ -187,7 +187,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
               onChanged: (value) => notifier
                   .updateThemeSettings(settings.copyWith(useSubThemes: value)),
               activeColor: colorScheme.primary,
-              activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+              activeTrackColor: colorScheme.primary.withOpacity(0.5),
             ),
             onTap: () {},
           ),
@@ -205,7 +205,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
               onChanged: (value) => notifier.updateThemeSettings(
                   settings.copyWith(swapLightColors: value)),
               activeColor: colorScheme.primary,
-              activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+              activeTrackColor: colorScheme.primary.withOpacity(0.5),
             ),
             onTap: () {},
           ),
@@ -219,7 +219,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
                 onChanged: (value) => notifier.updateThemeSettings(
                     settings.copyWith(swapDarkColors: value)),
                 activeColor: colorScheme.primary,
-                activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+                activeTrackColor: colorScheme.primary.withOpacity(0.5),
               ),
               onTap: () {},
             ),
@@ -232,7 +232,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
           //     onChanged: (value) => notifier
           //         .updateThemeSettings(settings.copyWith(useKeyColors: value)),
           //     activeColor: colorScheme.primary,
-          //     activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+          //     activeTrackColor: colorScheme.primary.withOpacity(0.5),
           //   ),
           //   onTap: () {},
           // ),
@@ -245,7 +245,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
           //     onChanged: (value) => notifier
           //         .updateThemeSettings(settings.copyWith(useTertiary: value)),
           //     activeColor: colorScheme.primary,
-          //     activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+          //     activeTrackColor: colorScheme.primary.withOpacity(0.5),
           //   ),
           //   onTap: () {},
           // ),
@@ -292,7 +292,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
               onChanged: (value) => notifier.updateThemeSettings(
                   settings.copyWith(useAppbarColors: value)),
               activeColor: colorScheme.primary,
-              activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+              activeTrackColor: colorScheme.primary.withOpacity(0.5),
             ),
             onTap: () {},
           ),
@@ -335,7 +335,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
               onChanged: (value) => notifier.updateThemeSettings(
                   settings.copyWith(transparentStatusBar: value)),
               activeColor: colorScheme.primary,
-              activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+              activeTrackColor: colorScheme.primary.withOpacity(0.5),
             ),
             onTap: () {},
           ),
@@ -362,7 +362,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
               onChanged: (value) => notifier.updateThemeSettings(
                   settings.copyWith(tooltipsMatchBackground: value)),
               activeColor: colorScheme.primary,
-              activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+              activeTrackColor: colorScheme.primary.withOpacity(0.5),
             ),
             onTap: () {},
           ),
@@ -380,7 +380,7 @@ class ThemeSettingsScreen extends ConsumerWidget {
               onChanged: (value) => notifier
                   .updateThemeSettings(settings.copyWith(useTextTheme: value)),
               activeColor: colorScheme.primary,
-              activeTrackColor: colorScheme.primary.withValues(alpha: 0.5),
+              activeTrackColor: colorScheme.primary.withOpacity(0.5),
             ),
             onTap: () {},
           ),
@@ -447,7 +447,7 @@ class SettingsSection extends StatelessWidget {
 
     return Card(
       elevation: 4,
-      shadowColor: colorScheme.shadow.withValues(alpha: 0.2),
+      shadowColor: colorScheme.shadow.withOpacity(0.2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: ExpansionTile(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -615,7 +615,7 @@ class _SimpleColorSchemeCard extends StatelessWidget {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                      color: colorScheme.primary.withValues(alpha: 0.2),
+                      color: colorScheme.primary.withOpacity(0.2),
                       blurRadius: 6)
                 ]
               : null,

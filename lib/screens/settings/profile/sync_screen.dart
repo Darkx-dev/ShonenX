@@ -40,7 +40,7 @@ class SyncSettingsScreen extends ConsumerWidget {
                     description,
                     style: TextStyle(
                       fontSize: 14,
-                      color: colorScheme.onSurface.withValues(alpha: 0.7),
+                      color: colorScheme.onSurface.withOpacity(0.7),
                     ),
                   ),
                 ],

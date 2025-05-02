@@ -179,8 +179,8 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen>
                 decoration: BoxDecoration(
                   gradient: RadialGradient(
                     colors: [
-                      colorScheme.primary.withValues(alpha: 0.05),
-                      colorScheme.primary.withValues(alpha: 0.0),
+                      colorScheme.primary.withOpacity(0.05),
+                      colorScheme.primary.withOpacity(0.0),
                     ],
                   ),
                   shape: BoxShape.circle,
@@ -196,8 +196,8 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen>
                 decoration: BoxDecoration(
                   gradient: RadialGradient(
                     colors: [
-                      colorScheme.secondary.withValues(alpha: 0.05),
-                      colorScheme.secondary.withValues(alpha: 0.0),
+                      colorScheme.secondary.withOpacity(0.05),
+                      colorScheme.secondary.withOpacity(0.0),
                     ],
                   ),
                   shape: BoxShape.circle,
@@ -225,7 +225,7 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen>
                             boxShadow: [
                               BoxShadow(
                                 color:
-                                    colorScheme.primary.withValues(alpha: 0.12),
+                                    colorScheme.primary.withOpacity(0.12),
                                 blurRadius: 20,
                                 spreadRadius: 2,
                                 offset: const Offset(0, 4),
@@ -263,7 +263,7 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen>
                   Text(
                     'Premium Anime Experience',
                     style: TextStyle(
-                      color: colorScheme.onSurface.withValues(alpha: 0.7),
+                      color: colorScheme.onSurface.withOpacity(0.7),
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
@@ -307,7 +307,7 @@ class _LoadingScreenState extends ConsumerState<LoadingScreen>
                         Text(
                           _loadingProgress < 1.0 ? 'Loading...' : 'Ready',
                           style: TextStyle(
-                            color: colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: colorScheme.onSurface.withOpacity(0.6),
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             letterSpacing: 0.2,

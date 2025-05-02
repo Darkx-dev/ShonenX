@@ -264,7 +264,7 @@ class UserProfileCard extends StatelessWidget {
             (theme.cardTheme.shape as RoundedRectangleBorder?)?.borderRadius ??
                 BorderRadius.circular(8),
         side:
-            BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.1)),
+            BorderSide(color: theme.colorScheme.outline.withOpacity(0.1)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -279,7 +279,7 @@ class UserProfileCard extends StatelessWidget {
                   Text(getGreeting(),
                       style: theme.textTheme.titleSmall?.copyWith(
                           color: theme.colorScheme.onSurface
-                              .withValues(alpha: 0.7))),
+                              .withOpacity(0.7))),
                   const SizedBox(height: 4),
                   Text(
                     user?.name ?? 'Guest',
@@ -311,7 +311,7 @@ class UserProfileCard extends StatelessWidget {
             tag: 'user-avatar',
             child: Material(
               elevation: 2,
-              shadowColor: theme.shadowColor.withValues(alpha: 0.2),
+              shadowColor: theme.shadowColor.withOpacity(0.2),
               borderRadius: BorderRadius.circular(16),
               child: InkWell(
                 onTap: () => context.push('/settings/profile'),
@@ -414,8 +414,8 @@ class DiscoverCard extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              theme.colorScheme.primary.withValues(alpha: 0.15),
-              theme.colorScheme.primary.withValues(alpha: 0.05)
+              theme.colorScheme.primary.withOpacity(0.15),
+              theme.colorScheme.primary.withOpacity(0.05)
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -429,7 +429,7 @@ class DiscoverCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                  color: theme.colorScheme.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(15)),
               child: Icon(Icons.explore,
                   color: theme.colorScheme.primary, size: 20),
@@ -447,7 +447,7 @@ class DiscoverCard extends StatelessWidget {
                   Text('Find your next favorite series',
                       style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurface
-                              .withValues(alpha: 0.7))),
+                              .withOpacity(0.7))),
                 ],
               ),
             ),
@@ -791,7 +791,7 @@ class _NavButtonState extends State<_NavButton>
                 color: widget.colorScheme.surfaceContainerHighest,
                 boxShadow: [
                   BoxShadow(
-                    color: widget.colorScheme.primary.withValues(alpha: 0.2),
+                    color: widget.colorScheme.primary.withOpacity(0.2),
                     blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),

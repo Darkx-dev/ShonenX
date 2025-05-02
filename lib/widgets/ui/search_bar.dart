@@ -76,7 +76,7 @@ class _SearchbarState extends State<Searchbar>
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
-            color: theme.colorScheme.primaryContainer.withValues(alpha: 0.15),
+            color: theme.colorScheme.primaryContainer.withOpacity(0.15),
             borderRadius: BorderRadius.circular(15),
             border: Border.all(
               color: widget.isLoading

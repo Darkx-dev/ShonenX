@@ -31,7 +31,7 @@ class MinimalCard extends StatelessWidget {
             right: 0,
             child: Container(
               padding: const EdgeInsets.all(8),
-              color: theme.colorScheme.surface.withValues(alpha: 0.9),
+              color: theme.colorScheme.surface.withOpacity(0.9),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

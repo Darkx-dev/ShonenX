@@ -18,7 +18,7 @@ class OverlayManager {
         right: isBrightness ? MediaQuery.of(context).size.width / 2 : 0,
         bottom: 0,
         child: Material(
-          color: Colors.black.withValues(alpha: 0.4),
+          color: Colors.black.withOpacity(0.4),
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -83,9 +83,9 @@ class OverlayManager {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.black.withValues(alpha: 0.0),
-                  Colors.black.withValues(alpha: 0.6),
-                  Colors.black.withValues(alpha: 0.0),
+                  Colors.black.withOpacity(0.0),
+                  Colors.black.withOpacity(0.6),
+                  Colors.black.withOpacity(0.0),
                 ],
                 begin: isForward ? Alignment.centerRight : Alignment.centerLeft,
                 end: isForward ? Alignment.centerLeft : Alignment.centerRight,

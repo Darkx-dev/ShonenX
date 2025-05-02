@@ -196,7 +196,7 @@ class _ContentState extends State<_Content>
         onSelected: (_) => setState(() => _filterBy = value),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         selectedColor:
-            theme.colorScheme.primaryContainer.withValues(alpha: 0.2),
+            theme.colorScheme.primaryContainer.withOpacity(0.2),
         checkmarkColor: theme.colorScheme.primary,
         labelStyle: GoogleFonts.roboto(
           fontSize: 12,
@@ -209,8 +209,8 @@ class _ContentState extends State<_Content>
           borderRadius: BorderRadius.circular(8),
           side: BorderSide(
             color: isSelected
-                ? theme.colorScheme.primary.withValues(alpha: 0.5)
-                : theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
+                ? theme.colorScheme.primary.withOpacity(0.5)
+                : theme.colorScheme.outlineVariant.withOpacity(0.2),
           ),
         ),
         backgroundColor: theme.colorScheme.surfaceContainerLow,
@@ -370,11 +370,11 @@ class _ContentState extends State<_Content>
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                           color: theme.colorScheme.outlineVariant
-                              .withValues(alpha: 0.2)),
+                              .withOpacity(0.2)),
                       boxShadow: [
                         BoxShadow(
                           color:
-                              theme.colorScheme.shadow.withValues(alpha: 0.05),
+                              theme.colorScheme.shadow.withOpacity(0.05),
                           blurRadius: 8,
                           offset: const Offset(0, 4),
                         ),
@@ -469,7 +469,7 @@ class _ContentState extends State<_Content>
                     style: TextButton.styleFrom(
                       foregroundColor: theme.colorScheme.error,
                       backgroundColor: theme.colorScheme.errorContainer
-                          .withValues(alpha: 0.1),
+                          .withOpacity(0.1),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 8),
                     ),
@@ -525,7 +525,7 @@ class _ActionButtonState extends State<_ActionButton> {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             color: _isHovered && !isDisabled
-                ? widget.color.withValues(alpha: 0.1)
+                ? widget.color.withOpacity(0.1)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
@@ -535,7 +535,7 @@ class _ActionButtonState extends State<_ActionButton> {
               Icon(
                 widget.icon,
                 size: 20,
-                color: widget.color.withValues(alpha: isDisabled ? 0.5 : 1.0),
+                color: widget.color.withOpacity(isDisabled ? 0.5 : 1.0),
               ),
               const SizedBox(height: 4),
               Text(
@@ -544,7 +544,7 @@ class _ActionButtonState extends State<_ActionButton> {
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   color: theme.colorScheme.onSurface
-                      .withValues(alpha: isDisabled ? 0.5 : 1.0),
+                      .withOpacity(isDisabled ? 0.5 : 1.0),
                 ),
               ),
             ],
@@ -570,7 +570,7 @@ class _SearchField extends StatelessWidget {
           hintText: 'Search titles...',
           hintStyle: GoogleFonts.roboto(
             fontSize: 14,
-            color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+            color: theme.colorScheme.onSurfaceVariant.withOpacity(0.5),
           ),
           prefixIcon: Icon(Iconsax.search_normal,
               size: 20, color: theme.colorScheme.primary),
@@ -603,7 +603,7 @@ class _EmptyState extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withValues(alpha: 0.2),
+              color: theme.colorScheme.primaryContainer.withOpacity(0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(
@@ -647,7 +647,7 @@ class _EmptyState extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
                 side: BorderSide(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.2)),
+                    color: theme.colorScheme.primary.withOpacity(0.2)),
               ),
             ),
           ),
@@ -874,13 +874,13 @@ class _GroupedSectionState extends State<_GroupedSection> {
         color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.2)),
+            color: theme.colorScheme.outlineVariant.withOpacity(0.2)),
       ),
       child: Column(
         children: [
           Material(
             color: widget.multiSelectMode && areAllEpisodesSelected()
-                ? theme.colorScheme.primaryContainer.withValues(alpha: 0.2)
+                ? theme.colorScheme.primaryContainer.withOpacity(0.2)
                 : Colors.transparent,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
             child: InkWell(

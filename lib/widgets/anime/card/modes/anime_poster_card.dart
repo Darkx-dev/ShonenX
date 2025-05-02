@@ -21,7 +21,7 @@ class PosterCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: theme.shadowColor.withValues(alpha: isHovered ? 0.3 : 0.2),
+            color: theme.shadowColor.withOpacity(isHovered ? 0.3 : 0.2),
             blurRadius: isHovered ? 15 : 10,
             spreadRadius: isHovered ? 2 : 1,
           ),
@@ -44,8 +44,8 @@ class PosterCard extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withValues(alpha: 0.5),
-                    Colors.black.withValues(alpha: 0.85),
+                    Colors.black.withOpacity(0.5),
+                    Colors.black.withOpacity(0.85),
                   ],
                   stops: const [0.5, 0.75, 1.0],
                 ),
@@ -70,7 +70,7 @@ class PosterCard extends StatelessWidget {
                           Tag(
                             text: '${anime!.averageScore}%',
                             color: theme.colorScheme.primary
-                                .withValues(alpha: 0.9),
+                                .withOpacity(0.9),
                             textColor: theme.colorScheme.onPrimary,
                             icon: Iconsax.star1,
                             hasShadow: true,
@@ -81,7 +81,7 @@ class PosterCard extends StatelessWidget {
                           Tag(
                             text: anime!.format!.split('.').last,
                             color: theme.colorScheme.tertiaryContainer
-                                .withValues(alpha: 0.9),
+                                .withOpacity(0.9),
                             textColor: theme.colorScheme.onTertiaryContainer,
                             hasShadow: true,
                           ),
@@ -109,7 +109,7 @@ class PosterCard extends StatelessWidget {
                         Tag(
                           text: '${anime!.episodes} Episodes',
                           color: theme.colorScheme.secondary
-                              .withValues(alpha: 0.9),
+                              .withOpacity(0.9),
                           textColor: theme.colorScheme.onSecondary,
                           icon: Iconsax.play_circle,
                           hasShadow: true,
@@ -126,7 +126,7 @@ class PosterCard extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: isHovered
-                      ? theme.colorScheme.primary.withValues(alpha: 0.7)
+                      ? theme.colorScheme.primary.withOpacity(0.7)
                       : Colors.transparent,
                   width: 2.5,
                 ),
@@ -135,7 +135,7 @@ class PosterCard extends StatelessWidget {
                     ? [
                         BoxShadow(
                           color:
-                              theme.colorScheme.primary.withValues(alpha: 0.3),
+                              theme.colorScheme.primary.withOpacity(0.3),
                           blurRadius: 8,
                           spreadRadius: 0,
                         ),

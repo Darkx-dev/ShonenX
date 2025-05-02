@@ -234,7 +234,7 @@ class _Header extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withValues(alpha: 0.3),
+                    Colors.black.withOpacity(0.3),
                     colorScheme.surfaceContainerLowest,
                   ],
                   stops: const [0.0, 1.0],
@@ -384,12 +384,12 @@ class _Tag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: color?.withValues(alpha: 0.2) ??
-            Colors.white.withValues(alpha: 0.1),
+        color: color?.withOpacity(0.2) ??
+            Colors.white.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: color?.withValues(alpha: 0.1) ?? Colors.black12,
+            color: color?.withOpacity(0.1) ?? Colors.black12,
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -398,7 +398,7 @@ class _Tag extends StatelessWidget {
       child: Text(
         text,
         style: GoogleFonts.montserrat(
-          color: color ?? Colors.white.withValues(alpha: 0.9),
+          color: color ?? Colors.white.withOpacity(0.9),
           fontWeight: isStatus ? FontWeight.w600 : FontWeight.w500,
           fontSize: 12,
         ),
@@ -533,7 +533,7 @@ class _InfoItem extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: colorScheme.primary.withValues(alpha: 0.1),
+            color: colorScheme.primary.withOpacity(0.1),
             shape: BoxShape.circle,
           ),
           child: Icon(icon, color: colorScheme.primary, size: 24),
@@ -587,7 +587,7 @@ class _ActionButton extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: isPrimary
-                ? colorScheme.primary.withValues(alpha: 0.3)
+                ? colorScheme.primary.withOpacity(0.3)
                 : Colors.black12,
             blurRadius: 6,
             offset: const Offset(0, 2),
@@ -716,7 +716,7 @@ class _RankingCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: colorScheme.primary.withValues(alpha: 0.2),
+                    color: colorScheme.primary.withOpacity(0.2),
                     blurRadius: 4,
                   ),
                 ],
@@ -797,7 +797,7 @@ class _WatchButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: colorScheme.primary.withValues(alpha: 0.4),
+                  color: colorScheme.primary.withOpacity(0.4),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
@@ -976,7 +976,7 @@ class _StatusMenuItem extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: status.color.withValues(alpha: isCurrent ? 0.3 : 0.1),
+                color: status.color.withOpacity(isCurrent ? 0.3 : 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(status.icon, color: status.color, size: 20),

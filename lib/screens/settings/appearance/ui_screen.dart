@@ -197,7 +197,7 @@ class UISettingsScreen extends ConsumerWidget {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
-                      color: colorScheme.outline.withValues(alpha: 0.2),
+                      color: colorScheme.outline.withOpacity(0.2),
                     ),
                   ),
                   filled: true,
@@ -279,7 +279,7 @@ class UISettingsScreen extends ConsumerWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(
-                          color: colorScheme.outline.withValues(alpha: 0.2),
+                          color: colorScheme.outline.withOpacity(0.2),
                         ),
                       ),
                       filled: true,
@@ -358,7 +358,7 @@ class UISettingsScreen extends ConsumerWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: colorScheme.onSurface.withValues(alpha: 0.8),
+              color: colorScheme.onSurface.withOpacity(0.8),
             ),
           ),
           const SizedBox(height: 8),

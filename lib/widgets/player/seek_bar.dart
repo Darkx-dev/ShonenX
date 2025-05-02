@@ -71,7 +71,7 @@ class _SeekBarState extends State<SeekBar> {
                 borderRadius: BorderRadius.circular(5),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.2),
+                    color: Colors.black.withOpacity(0.2),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -86,7 +86,7 @@ class _SeekBarState extends State<SeekBar> {
               ),
               inactiveTrackBar: BoxDecoration(
                 color: widget.theme.colorScheme.primaryContainer
-                    .withValues(alpha: 0.2),
+                    .withOpacity(0.2),
                 borderRadius: BorderRadius.circular(4),
               ),
               activeTrackBarHeight: 4,
