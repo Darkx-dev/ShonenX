@@ -35,7 +35,6 @@ class UISettingsNotifier extends StateNotifier<UISettingsState> {
   UISettingsNotifier() : super(UISettingsState(uiSettings: UISettingsModel()));
 
   Future<void> initializeSettings() async {
-    // Public method
     state = state.copyWith(isLoading: true);
     _settingsBox = SettingsBox();
     await _settingsBox?.init();
@@ -93,8 +92,6 @@ class UISettingsScreen extends ConsumerWidget {
   }
 
   Widget _buildContent(BuildContext context, WidgetRef ref) {
-    // final colorScheme = Theme.of(context).colorScheme;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: CustomScrollView(
@@ -112,11 +109,11 @@ class UISettingsScreen extends ConsumerWidget {
                     description: 'Set the tab shown on app launch',
                   ),
                   SettingsItem(
-                    onTap: () {},
+                    onTap: () => _showLayoutStyleDialog(context, ref),
                     icon: Iconsax.grid_3,
                     title: 'Layout Style',
                     description: 'Choose between grid or list view',
-                    disabled: true,
+                    disabled: false,
                   ),
                 ],
               ),
@@ -234,6 +231,91 @@ class UISettingsScreen extends ConsumerWidget {
     );
   }
 
+  void _showLayoutStyleDialog(BuildContext context, WidgetRef ref) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final settings = ref.read(uiSettingsProvider);
+    final List<String> layoutStyles = ['horizontal', 'vertical'];
+
+    ValueNotifier<String> selectedStyle = ValueNotifier(
+      layoutStyles.contains(settings.uiSettings.layoutStyle)
+          ? settings.uiSettings.layoutStyle
+          : 'horizontal',
+    );
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: colorScheme.surface,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: const Text('Layout Style'),
+          content: ValueListenableBuilder<String>(
+            valueListenable: selectedStyle,
+            builder: (context, value, child) {
+              return DropdownButtonFormField<String>(
+                value: value,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: colorScheme.outline.withOpacity(0.2),
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: colorScheme.surfaceContainerHighest,
+                ),
+                dropdownColor: colorScheme.surfaceContainerHighest,
+                icon: Icon(Iconsax.arrow_down_1, color: colorScheme.onSurface),
+                style: TextStyle(color: colorScheme.onSurface),
+                onChanged: (newValue) => selectedStyle.value = newValue!,
+                items: layoutStyles.map((style) {
+                  return DropdownMenuItem<String>(
+                    value: style,
+                    child: Text(
+                      style.toUpperCase(),
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                  );
+                }).toList(),
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel',
+                  style: TextStyle(color: colorScheme.onSurface)),
+            ),
+            TextButton(
+              onPressed: () {
+                ref.read(uiSettingsProvider.notifier).updateUISettings(
+                      settings.uiSettings
+                          .copyWith(layoutStyle: selectedStyle.value),
+                    );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    duration: const Duration(seconds: 5),
+                    content: AwesomeSnackbarContent(
+                      title: 'Restart required',
+                      message: 'You need to restart to avoid UI glitches once',
+                      contentType: ContentType.warning,
+                    ),
+                  ),
+                );
+                Navigator.pop(context);
+              },
+              child: Text('Save', style: TextStyle(color: colorScheme.primary)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showCardStyleDialog(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final settings = ref.read(uiSettingsProvider);
@@ -263,39 +345,31 @@ class UISettingsScreen extends ConsumerWidget {
           content: ValueListenableBuilder<String>(
             valueListenable: selectedStyle,
             builder: (context, value, child) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  DropdownButtonFormField<String>(
-                    value: value,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: colorScheme.outline.withOpacity(0.2),
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: colorScheme.surfaceContainerHighest,
+              return DropdownButtonFormField<String>(
+                value: value,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: colorScheme.outline.withOpacity(0.2),
                     ),
-                    dropdownColor: colorScheme.surfaceContainerHighest,
-                    icon: Icon(Iconsax.arrow_down_1,
-                        color: colorScheme.onSurface),
-                    style: TextStyle(color: colorScheme.onSurface),
-                    onChanged: (newValue) => selectedStyle.value = newValue!,
-                    items: cardStyles.map((style) {
-                      return DropdownMenuItem<String>(
-                        value: style,
-                        child: Text(
-                          style,
-                          style: Theme.of(context).textTheme.labelLarge,
-                        ),
-                      );
-                    }).toList(),
                   ),
-                  const SizedBox(height: 16),
-                  _buildCardPreview(context, value),
-                ],
+                  filled: true,
+                  fillColor: colorScheme.surfaceContainerHighest,
+                ),
+                dropdownColor: colorScheme.surfaceContainerHighest,
+                icon: Icon(Iconsax.arrow_down_1, color: colorScheme.onSurface),
+                style: TextStyle(color: colorScheme.onSurface),
+                onChanged: (newValue) => selectedStyle.value = newValue!,
+                items: cardStyles.map((style) {
+                  return DropdownMenuItem<String>(
+                    value: style,
+                    child: Text(
+                      style,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                  );
+                }).toList(),
               );
             },
           ),
@@ -331,37 +405,6 @@ class UISettingsScreen extends ConsumerWidget {
           ],
         );
       },
-    );
-  }
-
-  Widget _buildCardPreview(BuildContext context, String style) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Preview',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: colorScheme.onSurface.withOpacity(0.8),
-            ),
-          ),
-          const SizedBox(height: 8),
-          AnimatedAnimeCard(
-            anime: animeMedia,
-            tag: 'preview_$style',
-            mode: style,
-          ),
-        ],
-      ),
     );
   }
 }
