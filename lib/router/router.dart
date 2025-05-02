@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,6 +26,7 @@ import 'package:shonenx/screens/settings/source/provider_screen.dart';
 import 'package:shonenx/screens/watch_screen/watch_screen.dart';
 import 'package:shonenx/screens/watchlist_screen.dart';
 import 'package:shonenx/widgets/ui/layouts/settings_layout.dart';
+import 'dart:ui';
 
 // Navigation item configuration
 class NavItem {
@@ -60,7 +60,6 @@ final GoRouter router = GoRouter(
       builder: (context, state, navigationShell) =>
           AppRouterScreen(navigationShell: navigationShell),
       branches: navItems.asMap().entries.map((entry) {
-        // final index = entry.key;
         final item = entry.value;
         return StatefulShellBranch(
           routes: [
@@ -215,11 +214,77 @@ List<GoRoute> _buildSettingsSubRoutes(List<_SettingsRouteConfig> configs) {
   }).toList();
 }
 
+// KeepAliveWrapper to preserve screen state
+class KeepAliveWrapper extends StatefulWidget {
+  final Widget child;
+
+  const KeepAliveWrapper({super.key, required this.child});
+
+  @override
+  _KeepAliveWrapperState createState() => _KeepAliveWrapperState();
+}
+
+class _KeepAliveWrapperState extends State<KeepAliveWrapper>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return widget.child;
+  }
+}
+
 // AppRouterScreen
-class AppRouterScreen extends StatelessWidget {
+class AppRouterScreen extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
 
   const AppRouterScreen({super.key, required this.navigationShell});
+
+  @override
+  _AppRouterScreenState createState() => _AppRouterScreenState();
+}
+
+class _AppRouterScreenState extends State<AppRouterScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.navigationShell.currentIndex;
+    _tabController = TabController(
+      length: navItems.length,
+      vsync: this,
+      initialIndex: _currentIndex,
+    );
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) {
+        setState(() {
+          _currentIndex = _tabController.index;
+        });
+        widget.navigationShell.goBranch(_tabController.index);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _handleTabSelection(int index) {
+    if (_currentIndex != index) {
+      setState(() {
+        _currentIndex = index;
+      });
+      _tabController.animateTo(index);
+      widget.navigationShell.goBranch(index);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -239,25 +304,55 @@ class AppRouterScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(
                 left: isWideScreen ? 90 : 0,
-                bottom: isWideScreen ? 15 : 0,
+                bottom: isWideScreen ? 15 : 80,
                 top: isWideScreen ? 15 : 0,
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: navigationShell,
+                child: TabBarView(
+                  controller: _tabController,
+                  physics: const BouncingScrollPhysics(),
+                  children: navItems.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final item = entry.value;
+                    if (item.path == '/browse') {
+                      // Use Consumer to react to route changes
+                      return KeepAliveWrapper(
+                        child: Consumer(
+                          builder: (context, ref, _) {
+                            final keyword = GoRouterState.of(context)
+                                .uri
+                                .queryParameters['keyword'];
+                            return BrowseScreen(
+                              key: ValueKey('browse_$keyword'),
+                              keyword: keyword,
+                            );
+                          },
+                        ),
+                      );
+                    }
+                    return KeepAliveWrapper(child: item.screen);
+                  }).toList(),
+                ),
               ),
             ),
-            Positioned(
-              left: isWideScreen ? 10 : 0,
-              right: isWideScreen ? null : 0,
-              top: isWideScreen ? 20 : null,
-              bottom: 10,
-              child: SafeArea(
-                child: isWideScreen
-                    ? _buildFloatingSideNav(context)
-                    : _buildCrystalBottomNav(context),
+            if (isWideScreen)
+              Positioned(
+                left: 10,
+                top: 20,
+                bottom: 10,
+                child: _buildFloatingSideNav(context),
+              )
+            else
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 10,
+                child: SafeArea(
+                  top: false,
+                  child: _buildCrystalTabBar(context),
+                ),
               ),
-            ),
           ],
         ),
       ),
@@ -284,16 +379,17 @@ class AppRouterScreen extends StatelessWidget {
         children: navItems.asMap().entries.map((entry) {
           final index = entry.key;
           final item = entry.value;
-          final isSelected = navigationShell.currentIndex == index;
+          final isSelected = _currentIndex == index;
           return Expanded(
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: index == 0
-                    ? BorderRadius.only(
+                    ? const BorderRadius.only(
                         topLeft: Radius.circular(50),
-                        topRight: Radius.circular(50))
+                        topRight: Radius.circular(50),
+                      )
                     : index == (navItems.length - 1)
-                        ? BorderRadius.only(
+                        ? const BorderRadius.only(
                             bottomLeft: Radius.circular(50),
                             bottomRight: Radius.circular(50),
                           )
@@ -304,14 +400,19 @@ class AppRouterScreen extends StatelessWidget {
               ),
               padding: const EdgeInsets.symmetric(vertical: 15),
               margin: const EdgeInsets.all(5),
-              child: InkWell(
-                onTap: () => navigationShell.goBranch(index),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  _handleTabSelection(index);
+                },
                 child: Center(
                   child: Icon(
                     item.icon,
                     color: isSelected
                         ? theme.colorScheme.primary
                         : theme.colorScheme.onSurface,
+                    semanticLabel: _getTabLabel(index),
                   ),
                 ),
               ),
@@ -322,46 +423,67 @@ class AppRouterScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCrystalBottomNav(BuildContext context) {
+  Widget _buildCrystalTabBar(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.sizeOf(context).width * 0.15),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(100),
+        borderRadius: BorderRadius.circular(30),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              color: theme.colorScheme.surface.withOpacity(0.5),
-              border:
-                  Border.all(color: theme.colorScheme.primary.withOpacity(0.8)),
+              color: theme.colorScheme.surface.withOpacity(0.7),
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                color: theme.colorScheme.primary.withOpacity(0.5),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: navItems.asMap().entries.map((entry) {
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+            child: TabBar(
+              controller: _tabController,
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color: theme.colorScheme.primary.withOpacity(0.2),
+              ),
+              indicatorPadding: const EdgeInsets.symmetric(horizontal: 4),
+              labelPadding: EdgeInsets.zero,
+              dividerHeight: 0,
+              indicatorWeight: 0,
+              tabs: navItems.asMap().entries.map((entry) {
                 final index = entry.key;
                 final item = entry.value;
-                final isSelected = navigationShell.currentIndex == index;
-                return Expanded(
-                  child: InkWell(
-                    onTap: () => navigationShell.goBranch(index),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: isSelected
-                            ? theme.colorScheme.primary.withOpacity(0.2)
-                            : null,
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Center(
+                final isSelected = _currentIndex == index;
+                return GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    HapticFeedback.lightImpact();
+                    _handleTabSelection(index);
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeInOut,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Center(
+                      child: AnimatedScale(
+                        scale: isSelected ? 1.0 : 1.0,
+                        duration: const Duration(milliseconds: 200),
                         child: Icon(
                           item.icon,
                           color: isSelected
                               ? theme.colorScheme.primary
-                              : theme.colorScheme.onSurface,
+                              : theme.colorScheme.onSurface.withOpacity(0.7),
+                          size: 28,
+                          semanticLabel: _getTabLabel(index),
                         ),
                       ),
                     ),
@@ -373,6 +495,19 @@ class AppRouterScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getTabLabel(int index) {
+    switch (index) {
+      case 0:
+        return 'Home';
+      case 1:
+        return 'Browse';
+      case 2:
+        return 'Watchlist';
+      default:
+        return 'Tab $index';
+    }
   }
 }
 
