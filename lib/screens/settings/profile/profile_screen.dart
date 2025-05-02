@@ -47,72 +47,54 @@ class ProfileSettingsScreen extends ConsumerWidget {
         _buildProfileCard(context, ref, user, loginAnilist),
         if (user != null) ...[
           const SizedBox(height: 24),
-          SettingsSection(
-              compact: true,
-              context: context,
-              title: 'Sync',
-              items: [
-                SettingsItem(
-                  compact: true,
-                  icon: Iconsax.refresh_circle,
-                  title: 'Sync Settings',
-                  description: 'Configure AniList sync behavior',
-                  onTap: () => context.push('/settings/profile/sync'),
-                  disabled: true,
-                ),
-                SettingsItem(
-                  compact: true,
-                  icon: Iconsax.timer_1,
-                  title: 'Auto Sync',
-                  description: 'Manage background sync settings',
-                  onTap: () => context.push('/settings/profile/auto-sync'),
-                  disabled: true,
-                ),
-              ]),
-          SettingsSection(
-              compact: true,
-              context: context,
-              title: 'Lists',
-              items: [
-                SettingsItem(
-                  compact: true,
-                  icon: Iconsax.task_square,
-                  title: 'List Settings',
-                  description: 'Customize your anime lists',
-                  onTap: () => context.push('/settings/profile/lists'),
-                  disabled: true,
-                ),
-                SettingsItem(
-                  compact: true,
-                  icon: Iconsax.import,
-                  title: 'Import Lists',
-                  description: 'Import lists from other services',
-                  onTap: () => context.push('/settings/profile/import'),
-                  disabled: true,
-                ),
-              ]),
-          SettingsSection(
-              compact: true,
-              context: context,
-              title: 'Account',
-              items: [
-                SettingsItem(
-                  compact: true,
-                  icon: Iconsax.shield_tick,
-                  title: 'Privacy',
-                  description: 'Manage your privacy settings',
-                  onTap: () => context.push('/settings/profile/privacy'),
-                  disabled: true,
-                ),
-                SettingsItem(
-                  compact: true,
-                  icon: Iconsax.document_download,
-                  title: 'Data & Storage',
-                  description: 'Manage app data and cache',
-                  onTap: () => context.push('/settings/profile/data'),
-                  disabled: true,
-                ),
-              ]),
+          SettingsSection(context: context, title: 'Sync', items: [
+            SettingsItem(
+              icon: Iconsax.refresh_circle,
+              title: 'Sync Settings',
+              description: 'Configure AniList sync behavior',
+              onTap: () => context.push('/settings/profile/sync'),
+              disabled: true,
+            ),
+            SettingsItem(
+              icon: Iconsax.timer_1,
+              title: 'Auto Sync',
+              description: 'Manage background sync settings',
+              onTap: () => context.push('/settings/profile/auto-sync'),
+              disabled: true,
+            ),
+          ]),
+          SettingsSection(context: context, title: 'Lists', items: [
+            SettingsItem(
+              icon: Iconsax.task_square,
+              title: 'List Settings',
+              description: 'Customize your anime lists',
+              onTap: () => context.push('/settings/profile/lists'),
+              disabled: true,
+            ),
+            SettingsItem(
+              icon: Iconsax.import,
+              title: 'Import Lists',
+              description: 'Import lists from other services',
+              onTap: () => context.push('/settings/profile/import'),
+              disabled: true,
+            ),
+          ]),
+          SettingsSection(context: context, title: 'Account', items: [
+            SettingsItem(
+              icon: Iconsax.shield_tick,
+              title: 'Privacy',
+              description: 'Manage your privacy settings',
+              onTap: () => context.push('/settings/profile/privacy'),
+              disabled: true,
+            ),
+            SettingsItem(
+              icon: Iconsax.document_download,
+              title: 'Data & Storage',
+              description: 'Manage app data and cache',
+              onTap: () => context.push('/settings/profile/data'),
+              disabled: true,
+            ),
+          ]),
         ],
         const SizedBox(height: 48),
       ],
@@ -181,8 +163,8 @@ class ProfileSettingsScreen extends ConsumerWidget {
                             : Container(
                                 width: 48,
                                 height: 48,
-                                color: theme.colorScheme.primary
-                                    .withOpacity(0.1),
+                                color:
+                                    theme.colorScheme.primary.withOpacity(0.1),
                                 child: Icon(
                                   Iconsax.user,
                                   color: theme.colorScheme.primary,
@@ -235,8 +217,7 @@ class ProfileSettingsScreen extends ConsumerWidget {
                     },
                     icon: const Icon(Iconsax.logout),
                     style: IconButton.styleFrom(
-                      backgroundColor:
-                          theme.colorScheme.error.withOpacity(0.1),
+                      backgroundColor: theme.colorScheme.error.withOpacity(0.1),
                       foregroundColor: theme.colorScheme.error,
                       padding: const EdgeInsets.all(10),
                     ),
@@ -282,8 +263,7 @@ class ProfileSettingsScreen extends ConsumerWidget {
                           'Sync your anime progress and lists',
                           style: TextStyle(
                             fontSize: 14,
-                            color: theme.colorScheme.onSurface
-                                .withOpacity(0.7),
+                            color: theme.colorScheme.onSurface.withOpacity(0.7),
                           ),
                         ),
                       ],
